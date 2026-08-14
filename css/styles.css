@@ -399,6 +399,22 @@ section { padding: 56px 0; }
 }
 .tree-accent.left { left: 0; transform: translateX(-50%); }
 .tree-accent.right { right: 0; transform: translateX(50%); }
+
+/* Leaves sway gently, pivoting where the canopy meets the trunk */
+@keyframes sway {
+  from { transform: rotate(-1.4deg); }
+  to   { transform: rotate(1.4deg); }
+}
+.tree-accent .canopy {
+  transform-box: fill-box;
+  transform-origin: 50% 88%;
+  animation: sway 7s ease-in-out infinite alternate;
+}
+/* Offset the second tree so the two never move in lockstep */
+.tree-accent.right .canopy {
+  animation-duration: 9.2s;
+  animation-delay: -3.1s;
+}
 .hill-accent {
   position: absolute;
   bottom: 0;
@@ -562,6 +578,7 @@ section { padding: 56px 0; }
 /* Respect users who prefer less motion */
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
+  .tree-accent .canopy { animation: none; }
   .hero .eyebrow,
   .hero h1,
   .hero .lead,
