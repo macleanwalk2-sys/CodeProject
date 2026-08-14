@@ -367,14 +367,19 @@ section { padding: 56px 0; }
 /* Oak trees peeking in from the left and right edges of the section */
 .how-it-works { position: relative; overflow: hidden; }
 .how-it-works > .container { position: relative; z-index: 1; }
+/* One group, one opacity, so same-colored overlaps merge seamlessly */
+.section-accents {
+  position: absolute;
+  inset: 0;
+  opacity: 0.20;
+  pointer-events: none;
+  z-index: 0;
+}
 .tree-accent {
   position: absolute;
   top: 0;
   height: 100%;
   width: auto;
-  opacity: 0.20;
-  pointer-events: none;
-  z-index: 0;
 }
 .tree-accent.left { left: 0; transform: translateX(-50%); }
 .tree-accent.right { right: 0; transform: translateX(50%); }
@@ -384,13 +389,9 @@ section { padding: 56px 0; }
   left: 0;
   width: 100%;
   height: 120px;
-  opacity: 0.20;
-  pointer-events: none;
-  z-index: 0;
 }
 @media (max-width: 900px) {
-  .tree-accent,
-  .hill-accent { display: none; }
+  .section-accents { display: none; }
 }
 
 .steps {
