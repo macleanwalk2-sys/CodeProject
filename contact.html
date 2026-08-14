@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Oakwood Marketing Services</title>
+  <meta name="description" content="Get in touch with Oakwood Marketing Services for a free quote on website development, SEO, and custom marketing in the Raleigh–Durham area.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <span class="logo-mark">O</span>
+        Oakwood Marketing
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="contact.html" class="btn btn-primary">Get a Quote</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Page header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Get in Touch</h1>
+      <p>Tell us about your business and we'll get back to you with a free quote.</p>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section>
+    <div class="container contact-grid">
+
+      <!-- Form -->
+      <div>
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="service">What can we help with?</label>
+            <select id="service" name="service">
+              <option value="website">Website Development</option>
+              <option value="seo">SEO</option>
+              <option value="custom">Custom Services</option>
+              <option value="other">Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-note">This is a demo form — messages aren't sent yet. Connect a form service or email handler to go live.</p>
+          <p id="formSuccess" style="display:none; color:#1f7a4d; font-weight:600; margin-top:14px;">Thanks! Your message has been received. We'll be in touch soon.</p>
+        </form>
+      </div>
+
+      <!-- Info -->
+      <div class="contact-info">
+        <div class="info-item">
+          <span class="icon">📍</span>
+          <div>
+            <strong>Location</strong><br>
+            Raleigh–Durham (RDU) Area, North Carolina
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="icon">✉️</span>
+          <div>
+            <strong>Email</strong><br>
+            <a href="mailto:hello@oakwoodmarketing.com">hello@oakwoodmarketing.com</a>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="icon">📞</span>
+          <div>
+            <strong>Phone</strong><br>
+            (Add your number here)
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="icon">🕒</span>
+          <div>
+            <strong>Hours</strong><br>
+            Mon–Fri, 9am–5pm ET
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <a href="index.html" class="brand" style="color:#fff;">
+          <span class="logo-mark">O</span> Oakwood Marketing
+        </a>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        © 2026 Oakwood Marketing Services · Raleigh–Durham, NC
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('contactForm').reset();
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
