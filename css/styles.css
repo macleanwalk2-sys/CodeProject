@@ -369,16 +369,15 @@ section { padding: 56px 0; }
 .how-it-works > .container { position: relative; z-index: 1; }
 .tree-accent {
   position: absolute;
-  top: 50%;
-  width: 240px;
-  height: auto;
-  opacity: 0.10;
-  transform: translateY(-50%);
+  top: 0;
+  height: 100%;
+  width: auto;
+  opacity: 0.20;
   pointer-events: none;
   z-index: 0;
 }
-.tree-accent.left { left: -120px; }
-.tree-accent.right { right: -120px; transform: translateY(-50%) scaleX(-1); }
+.tree-accent.left { left: 0; transform: translateX(-50%); }
+.tree-accent.right { right: 0; transform: translateX(50%); }
 @media (max-width: 900px) {
   .tree-accent { display: none; }
 }
