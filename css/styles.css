@@ -363,6 +363,26 @@ section { padding: 56px 0; }
 }
 
 /* ---------- Process steps ---------- */
+
+/* Oak trees peeking in from the left and right edges of the section */
+.how-it-works { position: relative; overflow: hidden; }
+.how-it-works > .container { position: relative; z-index: 1; }
+.tree-accent {
+  position: absolute;
+  top: 50%;
+  width: 240px;
+  height: auto;
+  opacity: 0.10;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.tree-accent.left { left: -120px; }
+.tree-accent.right { right: -120px; transform: translateY(-50%) scaleX(-1); }
+@media (max-width: 900px) {
+  .tree-accent { display: none; }
+}
+
 .steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
