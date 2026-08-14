@@ -369,8 +369,19 @@ section { padding: 56px 0; }
 
 /* ---------- Process steps ---------- */
 
-/* Oak trees peeking in from the left and right edges of the section */
-.how-it-works { position: relative; overflow: hidden; padding-bottom: 150px; }
+/* One continuous scene shared by "What we do" and "How we work".
+   The trees span both sections so the two read as a single landscape. */
+.scene {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--bg-soft) 0%, #eef6f1 100%);
+}
+.scene > section {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+.how-it-works { padding-bottom: 150px; }
 .how-it-works > .container { position: relative; z-index: 1; }
 /* One group, one opacity, so same-colored overlaps merge seamlessly */
 .section-accents {
