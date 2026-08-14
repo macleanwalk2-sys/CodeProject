@@ -369,6 +369,12 @@ section { padding: 56px 0; }
 
 /* ---------- Elevated design pass ---------- */
 
+/* Nav "Get a Quote" button: keep white text (override the gray nav-link color) */
+.nav-links a.btn-primary,
+.nav-links a.btn-primary:hover {
+  color: #fff;
+}
+
 /* Eyebrow: subtle ring for definition */
 .eyebrow {
   box-shadow: inset 0 0 0 1px rgba(31, 122, 77, 0.14);
