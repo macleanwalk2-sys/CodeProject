@@ -5,8 +5,8 @@
   --green: #1f7a4d;
   --green-dark: #15603b;
   --green-light: #e8f3ec;
-  --ink: #1a1f1c;
-  --muted: #5c6b62;
+  --ink: #141816;
+  --muted: #545c58;
   --white: #ffffff;
   --bg-soft: #f6f9f7;
   --border: #e2ebe5;
@@ -208,7 +208,11 @@ section { padding: 56px 0; }
   padding: 26px 22px;
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
-.card:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+.card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+  border-color: #cfe0d6;
+}
 .card .icon {
   width: 44px; height: 44px;
   border-radius: 10px;
@@ -225,14 +229,15 @@ section { padding: 56px 0; }
 
 /* ---------- CTA band ---------- */
 .cta-band {
-  background: var(--green);
+  background: linear-gradient(135deg, #238755 0%, #16603c 100%);
   color: #fff;
   border-radius: 16px;
   padding: 44px;
   text-align: center;
+  box-shadow: 0 12px 32px rgba(31, 122, 77, 0.18);
 }
 .cta-band h2 { margin: 0 0 10px; font-size: 1.8rem; }
-.cta-band p { margin: 0 0 24px; opacity: 0.9; font-size: 1.05rem; }
+.cta-band p { margin: 0 0 24px; color: #dcece3; font-size: 1.05rem; }
 .cta-band .btn-primary { background: #fff; color: var(--green); }
 .cta-band .btn-primary:hover { background: var(--green-light); }
 
