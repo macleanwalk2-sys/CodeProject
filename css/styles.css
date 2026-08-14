@@ -365,7 +365,7 @@ section { padding: 56px 0; }
 /* ---------- Process steps ---------- */
 
 /* Oak trees peeking in from the left and right edges of the section */
-.how-it-works { position: relative; overflow: hidden; }
+.how-it-works { position: relative; overflow: hidden; padding-bottom: 150px; }
 .how-it-works > .container { position: relative; z-index: 1; }
 /* One group, one opacity, so same-colored overlaps merge seamlessly */
 .section-accents {
