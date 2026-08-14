@@ -515,9 +515,9 @@ section { padding: 56px 0; }
   position: relative;
   display: inline-block;
 }
-/* The arc comes from animating horizontal and vertical travel separately,
-   each with a single continuous curve, so there are no mid-flight speed
-   changes. Horizontal glides in steadily; vertical drops fast then settles. */
+/* The bird travels along one real curve: a smile-shaped swoop that dips
+   below the tag and rises back up to perch. One path, one easing curve,
+   so the motion never changes character mid-flight. */
 .cardinal-flight {
   position: absolute;
   right: 12px;
@@ -525,22 +525,31 @@ section { padding: 56px 0; }
   width: 42px;
   height: 42px;
   pointer-events: none;
-  animation: flyX 1.35s cubic-bezier(0.30, 0, 0.42, 1) 0.45s both;
+  offset-path: path("M -540 -300 C -400 220, -120 50, 0 0");
+  offset-rotate: 0deg;
+  animation: fly 2.5s cubic-bezier(0.20, 0.30, 0.20, 1) 0.5s both;
 }
 .cardinal {
   display: block;
   width: 100%;
   height: 100%;
-  animation: flyY 1.35s cubic-bezier(0.12, 0.72, 0.28, 1) 0.45s both;
+  animation: tilt 2.5s cubic-bezier(0.20, 0.30, 0.20, 1) 0.5s both;
 }
 
-@keyframes flyX {
-  from { transform: translateX(-58vw); }
-  to   { transform: translateX(0); }
+@keyframes fly {
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
 }
-@keyframes flyY {
-  from { transform: translateY(-34vh) rotate(-15deg); }
-  to   { transform: translateY(0) rotate(0deg); }
+@keyframes tilt {
+  from { transform: rotate(-13deg); }
+  to   { transform: rotate(0deg); }
+}
+
+/* Shorter arc on small screens so the bird stays on-stage */
+@media (max-width: 700px) {
+  .cardinal-flight {
+    offset-path: path("M -300 -190 C -230 140, -70 34, 0 0");
+  }
 }
 
 /* ---------- Scroll reveal ---------- */
