@@ -521,19 +521,20 @@ section { padding: 56px 0; }
 .cardinal-flight {
   position: absolute;
   right: 12px;
-  bottom: calc(100% - 8px);
+  /* Feet come to rest right on the top edge of the pill */
+  bottom: calc(100% - 3px);
   width: 42px;
   height: 42px;
   pointer-events: none;
   offset-path: path("M -540 -300 C -400 220, -120 50, 0 0");
   offset-rotate: 0deg;
-  animation: fly 2.5s cubic-bezier(0.20, 0.30, 0.20, 1) 0.5s both;
+  animation: fly 2.05s cubic-bezier(0.20, 0.30, 0.20, 1) 0.5s both;
 }
 .cardinal {
   display: block;
   width: 100%;
   height: 100%;
-  animation: tilt 2.5s cubic-bezier(0.20, 0.30, 0.20, 1) 0.5s both;
+  animation: tilt 2.05s cubic-bezier(0.20, 0.30, 0.20, 1) 0.5s both;
 }
 
 @keyframes fly {
