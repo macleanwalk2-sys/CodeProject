@@ -141,7 +141,10 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Hero ---------- */
 .hero {
-  padding: 72px 0 56px;
+  padding: 84px 0 64px;
+  background:
+    radial-gradient(1100px 380px at 85% -15%, var(--green-light), transparent 62%),
+    linear-gradient(180deg, #ffffff 0%, var(--bg-soft) 100%);
 }
 .hero-grid {
   display: grid;
@@ -150,10 +153,11 @@ a:hover { text-decoration: underline; }
   align-items: center;
 }
 .hero h1 {
-  font-size: 2.6rem;
-  line-height: 1.15;
+  font-size: 2.9rem;
+  line-height: 1.12;
   margin: 0 0 16px;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.8px;
+  text-wrap: balance;
 }
 .hero .lead {
   font-size: 1.15rem;
@@ -361,4 +365,64 @@ section { padding: 56px 0; }
   .contact-grid { grid-template-columns: 1fr; }
   .hero h1 { font-size: 2.1rem; }
   .cta-band { padding: 32px 20px; }
+}
+
+/* ---------- Elevated design pass ---------- */
+
+/* Eyebrow: subtle ring for definition */
+.eyebrow {
+  box-shadow: inset 0 0 0 1px rgba(31, 122, 77, 0.14);
+}
+
+/* Primary button: lift + soft shadow so it reads as clickable */
+.btn-primary {
+  box-shadow: 0 6px 16px rgba(31, 122, 77, 0.22);
+}
+.btn-primary:hover {
+  box-shadow: 0 10px 24px rgba(31, 122, 77, 0.30);
+  transform: translateY(-1px);
+}
+
+/* Cards: green accent line that draws in on hover */
+.card {
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), #3aa76d);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.card:hover::before { transform: scaleX(1); }
+
+/* Card icons: gentle scale on hover */
+.card .icon { transition: transform 0.2s ease; }
+.card:hover .icon { transform: scale(1.08); }
+
+/* Hero image: soft float */
+.hero-img { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.hero-img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(31, 122, 77, 0.16);
+}
+
+/* Section headings: a touch more presence */
+.section-head h2,
+.page-header h1 { letter-spacing: -0.6px; }
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  .card:hover { transform: none; }
+  .hero-img:hover { transform: none; }
 }
