@@ -137,6 +137,7 @@ a:hover { text-decoration: underline; }
 /* ---------- Hero ---------- */
 .hero {
   padding: 84px 0 64px;
+  overflow: hidden;
   background:
     radial-gradient(1100px 380px at 85% -15%, var(--green-light), transparent 62%),
     linear-gradient(180deg, #ffffff 0%, var(--bg-soft) 100%);
@@ -175,6 +176,7 @@ a:hover { text-decoration: underline; }
 }
 
 .eyebrow {
+  position: relative;
   display: inline-block;
   font-size: 0.8rem;
   font-weight: 700;
@@ -509,20 +511,15 @@ section { padding: 56px 0; }
 .page-header h1 { letter-spacing: -0.6px; }
 
 /* ---------- Cardinal ---------- */
-.hero { overflow: hidden; }
-
-.eyebrow-wrap {
-  position: relative;
-  display: inline-block;
-}
 /* The bird travels along one real curve: a smile-shaped swoop that dips
    below the tag and rises back up to perch. One path, one easing curve,
-   so the motion never changes character mid-flight. */
+   so the motion never changes character mid-flight.
+   Anchored to the pill itself, so 100% is exactly the pill's height and the
+   feet come to rest on its top edge. */
 .cardinal-flight {
   position: absolute;
-  right: 12px;
-  /* Feet come to rest right on the top edge of the pill */
-  bottom: calc(100% - 3px);
+  right: 14px;
+  bottom: calc(100% - 7px);
   width: 42px;
   height: 42px;
   pointer-events: none;
