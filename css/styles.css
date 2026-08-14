@@ -71,15 +71,10 @@ a:hover { text-decoration: underline; }
 .brand:hover { text-decoration: none; }
 
 .brand .logo-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: var(--green);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 800;
+  width: 34px;
+  height: 34px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .nav-links {
