@@ -402,8 +402,8 @@ section { padding: 56px 0; }
 
 /* Leaves sway gently, pivoting where the canopy meets the trunk */
 @keyframes sway {
-  from { transform: rotate(-1.4deg); }
-  to   { transform: rotate(1.4deg); }
+  from { transform: rotate(-2.6deg); }
+  to   { transform: rotate(2.6deg); }
 }
 .tree-accent .canopy {
   transform-box: fill-box;
