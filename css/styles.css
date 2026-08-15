@@ -538,14 +538,14 @@ section { padding: 56px 0; }
    so the bird arrives over the tag with its speed already spent. */
 @keyframes flyAcross {
   0%   { transform: translateX(-430px); animation-timing-function: linear; }
-  44%  { transform: translateX(-140px); animation-timing-function: cubic-bezier(0.25, 0.5, 0.35, 1); }
-  70%  { transform: translateX(-7px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
+  46%  { transform: translateX(-165px); animation-timing-function: cubic-bezier(0.35, 0.15, 0.5, 0.95); }
+  78%  { transform: translateX(-18px);  animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
   100% { transform: translateX(0); }
 }
 @keyframes flyArc {
-  0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.22, 0.42, 0.5, 1); }
-  44%  { transform: translateY(42px);   animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
-  70%  { transform: translateY(-22px);  animation-timing-function: cubic-bezier(0.45, 0, 0.30, 1); }
+  0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.30, 0.35, 0.55, 0.95); }
+  46%  { transform: translateY(38px);   animation-timing-function: cubic-bezier(0.40, 0.05, 0.55, 0.95); }
+  78%  { transform: translateY(-14px);  animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 1); }
   100% { transform: translateY(0); }
 }
 /* Body pitch follows the path: nose down through the dive, level at the
@@ -556,9 +556,9 @@ section { padding: 56px 0; }
   animation: pitch 2.4s ease-in-out 0.5s both;
 }
 @keyframes pitch {
-  0%   { transform: rotate(11deg); }
-  44%  { transform: rotate(0deg); }
-  70%  { transform: rotate(-11deg); }
+  0%   { transform: rotate(10deg); }
+  46%  { transform: rotate(0deg); }
+  78%  { transform: rotate(-8deg); }
   100% { transform: rotate(0deg); }
 }
 
