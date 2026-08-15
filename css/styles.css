@@ -540,7 +540,7 @@ section { padding: 56px 0; }
    trades momentum for height. One segment, no waypoints, so the deceleration
    is continuous. All horizontal travel is spent by the stall at 76%. */
 @keyframes flyAcross {
-  0%   { transform: translateX(-430px); animation-timing-function: cubic-bezier(0.08, 0.52, 0.28, 1); }
+  0%   { transform: translateX(-430px); animation-timing-function: cubic-bezier(0.25, 0.40, 0.35, 1); }
   76%  { transform: translateX(0); }
   100% { transform: translateX(0); }
 }
