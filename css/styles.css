@@ -549,7 +549,7 @@ section { padding: 56px 0; }
    drop is unmistakably straight down. */
 @keyframes flyArc {
   0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.25, 0.40, 0.55, 1); }
-  46%  { transform: translateY(38px);   animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
+  46%  { transform: translateY(58px);   animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
   76%  { transform: translateY(-29px);  animation-timing-function: cubic-bezier(0.48, 0, 0.35, 1); }
   100% { transform: translateY(0); }
 }
