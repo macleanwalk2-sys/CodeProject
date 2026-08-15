@@ -2,7 +2,7 @@
    Scroll reveal: fade elements in as they enter the viewport. */
 
 (function () {
-  var targets = document.querySelectorAll('.reveal');
+  var targets = document.querySelectorAll('.reveal, .grow');
   if (!targets.length) return;
 
   // No IntersectionObserver (very old browser): just show everything.
