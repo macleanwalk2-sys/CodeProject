@@ -536,23 +536,21 @@ section { padding: 56px 0; }
    settle (70%+)  drops the last inch onto the perch, level again
    Horizontal covers most ground during the dive and brakes through the flare,
    so the bird arrives over the tag with its speed already spent. */
-/* One uninterrupted constant-speed run for the whole swoop. No waypoint at the
-   bottom of the U — a waypoint there splits the travel into two segments that
-   almost never work out to the same rate, and the mismatch reads as the bird
-   accelerating through the low point. It brakes only at the very end, coming
-   to a stop over the perch so the landing is straight down. */
+/* Enters fast and bleeds off speed all the way into the stall, the way a bird
+   trades momentum for height. One segment, no waypoints, so the deceleration
+   is continuous. All horizontal travel is spent by the stall at 76%. */
 @keyframes flyAcross {
-  0%   { transform: translateX(-430px); animation-timing-function: linear; }
-  70%  { transform: translateX(-40px);  animation-timing-function: cubic-bezier(0.32, 0, 0.25, 1); }
-  78%  { transform: translateX(0); }
+  0%   { transform: translateX(-430px); animation-timing-function: cubic-bezier(0.08, 0.52, 0.28, 1); }
+  76%  { transform: translateX(0); }
   100% { transform: translateX(0); }
 }
-/* Vertical eases to zero at the bottom of the U and again at the top of the
-   flare, rounding both turns. From the stall it drops vertically and settles. */
+/* Vertical eases to zero at the bottom of the U and again at the stall,
+   rounding both turns. The stall sits well clear of the tag so the final
+   drop is unmistakably straight down. */
 @keyframes flyArc {
-  0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.35, 0.25, 0.55, 1); }
+  0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.30, 0.30, 0.55, 1); }
   46%  { transform: translateY(38px);   animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
-  78%  { transform: translateY(-26px);  animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  76%  { transform: translateY(-44px);  animation-timing-function: cubic-bezier(0.48, 0, 0.35, 1); }
   100% { transform: translateY(0); }
 }
 /* Body pitch follows the path: nose down through the dive, level at the
@@ -565,7 +563,7 @@ section { padding: 56px 0; }
 @keyframes pitch {
   0%   { transform: rotate(10deg); }
   46%  { transform: rotate(0deg); }
-  78%  { transform: rotate(-8deg); }
+  76%  { transform: rotate(-9deg); }
   100% { transform: rotate(0deg); }
 }
 
