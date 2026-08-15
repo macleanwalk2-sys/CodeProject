@@ -519,10 +519,12 @@ section { padding: 56px 0; }
 .hero-visual::after {
   content: "";
   position: absolute;
-  inset: -22% -14% 6%;
+  /* Spills past the illustration evenly on all four sides, so it reads as a
+     halo around it rather than a patch sitting above. */
+  inset: -18% -15%;
   border-radius: 50%;
   z-index: 0;
-  filter: blur(52px);
+  filter: blur(56px);
   pointer-events: none;
 }
 /* cool light, brand green */
