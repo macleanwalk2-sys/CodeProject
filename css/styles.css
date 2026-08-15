@@ -530,24 +530,24 @@ section { padding: 56px 0; }
   animation: flyArc 2.4s linear 0.5s both;
 }
 
-/* Two motions, nothing else. The swoop runs to 68% and eases out; the landing
-   runs from there. Each phase carries its own single easing curve, so there
-   are no waypoints inside a motion to restart the speed. The brief hover is
-   the natural pause where the swoop settles before the drop begins. */
+/* Two motions, nothing else: a swoop to 68%, then the landing.
+   The swoop curves because the two axes travel on different profiles — the
+   horizontal runs at a steady pace while the vertical falls fast and then
+   flattens out. Matching curves on both axes would draw a straight line. */
 @keyframes flyAcross {
-  0%   { transform: translateX(-430px); animation-timing-function: cubic-bezier(0.16, 0.55, 0.38, 1); }
+  0%   { transform: translateX(-430px); animation-timing-function: linear; }
   68%  { transform: translateX(-8px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
   100% { transform: translateX(0); }
 }
 @keyframes flyArc {
-  0%   { transform: translateY(-120px); animation-timing-function: cubic-bezier(0.20, 0.60, 0.35, 1); }
+  0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.07, 0.83, 0.26, 1); }
   68%  { transform: translateY(-20px);  animation-timing-function: cubic-bezier(0.40, 0, 0.25, 1); }
   100% { transform: translateY(0); }
 }
 
 @media (max-width: 700px) {
   @keyframes flyAcross {
-    0%   { transform: translateX(-280px); animation-timing-function: cubic-bezier(0.16, 0.55, 0.38, 1); }
+    0%   { transform: translateX(-280px); animation-timing-function: linear; }
     68%  { transform: translateX(-8px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
     100% { transform: translateX(0); }
   }
