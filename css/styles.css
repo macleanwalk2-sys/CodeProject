@@ -530,12 +530,12 @@ section { padding: 56px 0; }
 }
 /* cool light, brand green */
 .hero-visual::before {
-  background: rgba(62, 207, 142, 0.42);
+  background: rgba(62, 207, 142, 0.26);
   animation: glowCool 15s ease-in-out infinite alternate;
 }
 /* warm light, picked up from the cardinal's beak */
 .hero-visual::after {
-  background: rgba(240, 160, 42, 0.26);
+  background: rgba(240, 160, 42, 0.15);
   animation: glowWarm 21s ease-in-out infinite alternate;
 }
 .hero-img,
