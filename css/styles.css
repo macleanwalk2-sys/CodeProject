@@ -511,42 +511,40 @@ section { padding: 56px 0; }
 .page-header h1 { letter-spacing: -0.6px; }
 
 /* ---------- Cardinal ---------- */
-/* The bird travels along one real curve: a smile-shaped swoop that dips
-   below the tag and rises back up to perch. One path, one easing curve,
-   so the motion never changes character mid-flight.
-   Anchored to the pill itself, so 100% is exactly the pill's height and the
-   feet come to rest on its top edge. */
+/* The SVG is cropped so its bottom edge is exactly the bird's feet, and the
+   box sits directly on top of the pill. Feet on the tag, no guesswork.
+   The swoop comes from moving across and up-and-down at the same time:
+   horizontal glides in once, vertical dips below the tag and rises back. */
 .cardinal-flight {
   position: absolute;
   right: 14px;
-  bottom: calc(100% - 7px);
-  width: 42px;
-  height: 42px;
+  bottom: 100%;
+  line-height: 0;
   pointer-events: none;
-  offset-path: path("M -540 -300 C -400 220, -120 50, 0 0");
-  offset-rotate: 0deg;
-  animation: fly 2.05s cubic-bezier(0.20, 0.30, 0.20, 1) 0.5s both;
+  animation: flyAcross 2.1s cubic-bezier(0.25, 0, 0.25, 1) 0.5s both;
 }
 .cardinal {
   display: block;
-  width: 100%;
-  height: 100%;
-  animation: tilt 2.05s cubic-bezier(0.20, 0.30, 0.20, 1) 0.5s both;
+  width: 42px;
+  height: auto;
+  animation: flyArc 2.1s ease-in-out 0.5s both;
 }
 
-@keyframes fly {
-  from { offset-distance: 0%; }
-  to   { offset-distance: 100%; }
+@keyframes flyAcross {
+  from { transform: translateX(-540px); }
+  to   { transform: translateX(0); }
 }
-@keyframes tilt {
-  from { transform: rotate(-13deg); }
-  to   { transform: rotate(0deg); }
+@keyframes flyArc {
+  0%   { transform: translateY(-300px); }
+  55%  { transform: translateY(56px); }
+  100% { transform: translateY(0); }
 }
 
-/* Shorter arc on small screens so the bird stays on-stage */
+/* Shorter run-up on small screens so the bird stays on-stage */
 @media (max-width: 700px) {
-  .cardinal-flight {
-    offset-path: path("M -300 -190 C -230 140, -70 34, 0 0");
+  @keyframes flyAcross {
+    from { transform: translateX(-300px); }
+    to   { transform: translateX(0); }
   }
 }
 
@@ -623,6 +621,7 @@ section { padding: 56px 0; }
   .tree-accent .canopy { animation: none; }
   .cardinal-flight,
   .cardinal { animation: none; transform: none; }
+  .cardinal { width: 42px; }
   .hero .eyebrow,
   .hero h1,
   .hero .lead,
