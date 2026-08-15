@@ -510,6 +510,45 @@ section { padding: 56px 0; }
 .section-head h2,
 .page-header h1 { letter-spacing: -0.6px; }
 
+/* ---------- Ambient light behind the skyline ---------- */
+/* Two soft lights drifting at different speeds and sizes. Because they move
+   out of step, the colour where they overlap keeps shifting, so the glow
+   changes rather than just pulsing. */
+.hero-visual { position: relative; }
+.hero-visual::before,
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  inset: -22% -14% 6%;
+  border-radius: 50%;
+  z-index: 0;
+  filter: blur(52px);
+  pointer-events: none;
+}
+/* cool light, brand green */
+.hero-visual::before {
+  background: radial-gradient(circle at 42% 45%,
+              rgba(62, 207, 142, 0.55), rgba(31, 122, 77, 0.20) 48%, transparent 72%);
+  animation: glowCool 15s ease-in-out infinite alternate;
+}
+/* warm light, picked up from the cardinal's beak */
+.hero-visual::after {
+  background: radial-gradient(circle at 62% 58%,
+              rgba(240, 160, 42, 0.30), rgba(240, 160, 42, 0.10) 45%, transparent 70%);
+  animation: glowWarm 21s ease-in-out infinite alternate;
+}
+.hero-img,
+.hero-visual .img-caption { position: relative; z-index: 1; }
+
+@keyframes glowCool {
+  from { transform: translate(-5%, -3%) scale(1);    opacity: 0.7; }
+  to   { transform: translate(6%, 4%)   scale(1.14); opacity: 1; }
+}
+@keyframes glowWarm {
+  from { transform: translate(7%, 5%)   scale(1.1);  opacity: 0.55; }
+  to   { transform: translate(-6%, -4%) scale(0.94); opacity: 0.9; }
+}
+
 /* ---------- Cardinal ---------- */
 /* The SVG is cropped so its bottom edge is exactly the bird's feet, and the
    box sits directly on top of the pill. Feet on the tag, no guesswork.
@@ -673,6 +712,8 @@ section { padding: 56px 0; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .cta-tree { transform: none; transition: none; }
   .canopy { animation: none; }
+  .hero-visual::before,
+  .hero-visual::after { animation: none; }
   .cardinal-flight,
   .cardinal,
   .cardinal .bird { animation: none; transform: none; }
