@@ -1,76 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Low poly illustration of the downtown Raleigh, North Carolina skyline">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Low poly illustration of the downtown Raleigh, North Carolina skyline seen from the south, framed by trees">
 
-  <!-- ===== Sky, faceted ===== -->
+  <!-- ===== Sky ===== -->
   <rect width="800" height="500" fill="#f4fbf7"/>
-  <polygon points="0,0 300,0 0,175" fill="#e8f5ee"/>
-  <polygon points="300,0 800,0 800,120 540,66" fill="#e3f1e9"/>
-  <polygon points="0,175 300,0 520,150 0,320" fill="#eff8f3"/>
-  <polygon points="800,120 800,285 540,165" fill="#e0efe6"/>
+  <polygon points="0,0 340,0 0,180" fill="#e8f5ee"/>
+  <polygon points="340,0 800,0 800,112 560,60" fill="#e2f1e8"/>
+  <polygon points="0,180 340,0 540,148 0,300" fill="#eff8f3"/>
+  <polygon points="800,112 800,272 560,158" fill="#dfeee5"/>
+  <polygon points="640,44 694,76 694,140 640,172 586,140 586,76" fill="#d7ede2"/>
+  <polygon points="640,66 676,88 676,130 640,152 604,130 604,88" fill="#c6e5d4"/>
 
-  <!-- ===== Skyline, left to right ===== -->
+  <!-- ===== Towers, back to front ===== -->
 
-  <!-- low blocks at the far left -->
-  <polygon points="86,436 86,300 118,294 118,436" fill="#4aad7e"/>
-  <polygon points="118,436 118,294 150,308 150,436" fill="#2d8c62"/>
-  <polygon points="152,436 152,262 180,256 180,436" fill="#46a87a"/>
-  <polygon points="180,436 180,256 208,272 208,436" fill="#2a8a5f"/>
+  <!-- far left low-rise -->
+  <polygon points="118,344 118,270 146,264 146,344" fill="#57bb8c"/>
+  <polygon points="146,344 146,264 174,278 174,344" fill="#3fa172"/>
+  <polygon points="176,344 176,246 200,241 200,344" fill="#4aad7e"/>
+  <polygon points="200,344 200,241 224,254 224,344" fill="#2f8f60"/>
 
-  <!-- Wells Fargo Capitol Center: pyramid roof and needle spire -->
-  <polygon points="228,54 231,120 225,120" fill="#17603c"/>
-  <polygon points="200,168 228,118 228,168" fill="#57bb8c"/>
-  <polygon points="228,118 256,168 228,168" fill="#2f8f60"/>
-  <polygon points="200,436 200,168 228,162 228,436" fill="#43a97b"/>
-  <polygon points="228,436 228,162 256,176 256,436" fill="#1f7a4d"/>
+  <!-- Wells Fargo Capitol Center: needle spire over a pyramid cap -->
+  <polygon points="236,58 238,116 234,116" fill="#124e31"/>
+  <polygon points="212,152 236,114 236,152" fill="#6cc49c"/>
+  <polygon points="236,114 260,152 236,152" fill="#2f8f60"/>
+  <polygon points="212,344 212,152 236,146 236,344" fill="#4aad7e"/>
+  <polygon points="236,344 236,146 260,160 260,344" fill="#1f7a4d"/>
 
-  <!-- shoulder block -->
-  <polygon points="258,436 258,232 282,226 282,436" fill="#3fa172"/>
-  <polygon points="282,436 282,226 306,242 306,436" fill="#23814f"/>
+  <polygon points="266,344 266,208 288,203 288,344" fill="#3fa172"/>
+  <polygon points="288,344 288,203 310,216 310,344" fill="#27865a"/>
 
-  <!-- PNC Plaza: tallest, twin pronged crown -->
-  <polygon points="322,110 330,72 338,110" fill="#57bb8c"/>
-  <polygon points="356,110 364,78 372,110" fill="#2f8f60"/>
-  <polygon points="316,436 316,110 344,102 344,436" fill="#4aad7e"/>
-  <polygon points="344,436 344,102 378,116 378,436" fill="#1f7a4d"/>
+  <!-- PNC Plaza: tallest, twin crown -->
+  <polygon points="322,104 330,68 338,104" fill="#6cc49c"/>
+  <polygon points="352,104 360,80 368,104" fill="#2f8f60"/>
+  <polygon points="316,344 316,104 344,96 344,344" fill="#57bb8c"/>
+  <polygon points="344,344 344,96 376,110 376,344" fill="#1f7a4d"/>
 
-  <!-- tower right of PNC -->
-  <polygon points="392,436 392,158 420,151 420,436" fill="#43a97b"/>
-  <polygon points="420,436 420,151 448,168 448,436" fill="#25835a"/>
+  <polygon points="384,344 384,156 410,150 410,344" fill="#4aad7e"/>
+  <polygon points="410,344 410,150 436,166 436,344" fill="#27865a"/>
 
-  <!-- stepping down to the right -->
-  <polygon points="458,436 458,206 486,200 486,436" fill="#3fa172"/>
-  <polygon points="486,436 486,200 514,216 514,436" fill="#2a8a5f"/>
+  <polygon points="442,344 442,196 468,190 468,344" fill="#3fa172"/>
+  <polygon points="468,344 468,190 494,206 494,344" fill="#2a8a5f"/>
 
-  <polygon points="520,436 520,238 548,232 548,436" fill="#4aad7e"/>
-  <polygon points="548,436 548,232 576,248 576,436" fill="#23814f"/>
+  <!-- pale blocks on the right, the hotel side -->
+  <polygon points="500,344 500,214 532,208 532,344" fill="#8fd3b0"/>
+  <polygon points="532,344 532,208 564,224 564,344" fill="#5cb98d"/>
 
-  <!-- pale blocks on the right -->
-  <polygon points="584,436 584,222 616,216 616,436" fill="#8fd3b0"/>
-  <polygon points="616,436 616,216 648,232 648,436" fill="#5cb98d"/>
+  <polygon points="570,344 570,236 598,231 598,344" fill="#7ccda4"/>
+  <polygon points="598,344 598,231 626,246 626,344" fill="#4aad7e"/>
 
-  <polygon points="656,436 656,266 686,260 686,436" fill="#46a87a"/>
-  <polygon points="686,436 686,260 716,276 716,436" fill="#2d8c62"/>
-
-  <polygon points="722,436 722,292 748,287 748,436" fill="#4aad7e"/>
-  <polygon points="748,436 748,287 774,300 774,436" fill="#2a8a5f"/>
+  <polygon points="632,344 632,264 656,259 656,344" fill="#57bb8c"/>
+  <polygon points="656,344 656,259 680,274 680,344" fill="#2f8f60"/>
 
   <!-- ===== Convention centre: long low block in front ===== -->
-  <polygon points="236,436 236,352 400,344 400,436" fill="#2f8f60"/>
-  <polygon points="400,436 400,344 470,356 470,436" fill="#1f7a4d"/>
-  <polygon points="236,352 400,344 400,336 250,342" fill="#6cc49c"/>
+  <polygon points="252,346 252,300 268,292 424,286 424,346" fill="#2f8f60"/>
+  <polygon points="424,346 424,286 486,300 486,346" fill="#1f7a4d"/>
+  <polygon points="268,292 424,286 424,278 280,284" fill="#7ccda4"/>
 
-  <!-- ===== Foreground tree masses ===== -->
-  <polygon points="0,436 0,300 34,336 56,290 84,436" fill="#17603c"/>
-  <polygon points="44,436 72,352 100,436" fill="#1a6b42"/>
-  <polygon points="94,436 116,382 138,436" fill="#14563a"/>
-
-  <polygon points="800,436 800,296 764,330 742,286 714,436" fill="#17603c"/>
-  <polygon points="706,436 734,348 762,436" fill="#1a6b42"/>
-  <polygon points="668,436 690,384 712,436" fill="#14563a"/>
+  <!-- ===== Mid treeline: larger at the edges, smaller toward the centre ===== -->
+  <g fill="#1a6b42">
+    <polygon points="96,352 108,314 126,300 148,312 156,352"/>
+    <polygon points="156,352 168,320 184,308 202,318 210,352"/>
+    <polygon points="212,352 222,326 236,316 250,326 258,352"/>
+    <polygon points="286,352 296,330 308,322 320,330 328,352"/>
+    <polygon points="348,352 356,334 366,328 376,334 384,352"/>
+    <polygon points="410,352 418,334 428,328 438,334 446,352"/>
+    <polygon points="470,352 480,330 492,322 504,330 512,352"/>
+    <polygon points="538,352 548,326 562,316 576,326 584,352"/>
+    <polygon points="596,352 608,320 624,308 642,318 650,352"/>
+    <polygon points="652,352 664,314 682,300 704,312 712,352"/>
+  </g>
 
   <!-- ===== Ground ===== -->
-  <polygon points="0,436 800,428 800,500 0,500" fill="#15603b"/>
-  <polygon points="0,470 800,456 800,500 0,500" fill="#0f4a30"/>
+  <polygon points="0,346 800,340 800,500 0,500" fill="#17603c"/>
 
-  <text x="400" y="488" text-anchor="middle" font-family="Inter, Arial, sans-serif"
-        font-size="15" fill="#bfe3d1" font-weight="600" letter-spacing="5">RALEIGH, NORTH CAROLINA</text>
+  <!-- road receding toward the skyline -->
+  <polygon points="392,352 414,352 584,500 214,500" fill="#cfe6d9"/>
+  <g fill="#eef8f2">
+    <polygon points="400,372 406,372 408,388 398,388"/>
+    <polygon points="396,414 410,414 414,438 392,438"/>
+    <polygon points="390,470 416,470 422,500 384,500"/>
+  </g>
+
+  <!-- overpass crossing the road -->
+  <polygon points="120,382 680,374 680,398 120,406" fill="#2f8f60"/>
+  <polygon points="120,374 680,366 680,376 120,384" fill="#57bb8c"/>
+
+  <!-- ===== Foreground trees, framing both edges ===== -->
+  <!-- left -->
+  <polygon points="0,86 58,102 104,162 124,258 100,362 44,426 0,452" fill="#124e31"/>
+  <polygon points="18,142 64,128 96,184 62,236 22,214" fill="#17603c"/>
+  <polygon points="40,258 92,246 108,308 62,338" fill="#1a6b42"/>
+  <polygon points="52,330 80,326 96,500 40,500" fill="#0d3d26"/>
+  <!-- right -->
+  <polygon points="800,104 742,120 696,180 676,276 700,378 756,436 800,460" fill="#124e31"/>
+  <polygon points="782,160 736,146 704,202 738,254 778,232" fill="#17603c"/>
+  <polygon points="760,276 708,264 692,326 738,356" fill="#1a6b42"/>
+  <polygon points="748,348 720,344 704,500 760,500" fill="#0d3d26"/>
 </svg>
