@@ -540,7 +540,7 @@ section { padding: 56px 0; }
    trades momentum for height. One segment, no waypoints, so the deceleration
    is continuous. All horizontal travel is spent by the stall at 76%. */
 @keyframes flyAcross {
-  0%   { transform: translateX(-430px); animation-timing-function: cubic-bezier(0.17, 0.44, 0.32, 1); }
+  0%   { transform: translateX(-430px); animation-timing-function: cubic-bezier(0.33, 0.28, 0.45, 1); }
   76%  { transform: translateX(0); }
   100% { transform: translateX(0); }
 }
@@ -548,9 +548,9 @@ section { padding: 56px 0; }
    rounding both turns. The stall sits well clear of the tag so the final
    drop is unmistakably straight down. */
 @keyframes flyArc {
-  0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.25, 0.40, 0.55, 1); }
-  46%  { transform: translateY(14px);   animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
-  76%  { transform: translateY(-29px);  animation-timing-function: cubic-bezier(0.48, 0, 0.35, 1); }
+  0%   { transform: translateY(-88px); animation-timing-function: cubic-bezier(0.35, 0.22, 0.55, 1); }
+  50%  { transform: translateY(46px);  animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
+  76%  { transform: translateY(-32px); animation-timing-function: cubic-bezier(0.48, 0, 0.35, 1); }
   100% { transform: translateY(0); }
 }
 /* Body pitch follows the path: nose down through the dive, level at the
@@ -562,7 +562,7 @@ section { padding: 56px 0; }
 }
 @keyframes pitch {
   0%   { transform: rotate(10deg); }
-  46%  { transform: rotate(0deg); }
+  50%  { transform: rotate(0deg); }
   76%  { transform: rotate(-9deg); }
   100% { transform: rotate(0deg); }
 }
