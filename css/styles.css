@@ -521,35 +521,36 @@ section { padding: 56px 0; }
   bottom: 100%;
   line-height: 0;
   pointer-events: none;
-  animation: flyAcross 2.9s cubic-bezier(0.20, 0.55, 0.25, 1) 0.5s both;
+  animation: flyAcross 2.6s cubic-bezier(0.30, 0, 0.25, 1) 0.5s both;
 }
 .cardinal {
   display: block;
   width: 42px;
   height: auto;
-  animation: flyArc 2.9s ease-in-out 0.5s both;
+  animation: flyArc 2.6s ease-in-out 0.5s both;
 }
 
-/* Long horizontal run, mostly finished by the time he reaches the tag */
+/* Starts just off the left edge so the whole swoop is on screen. Travels at a
+   steady horizontal pace, easing only into the final approach. */
 @keyframes flyAcross {
-  0%   { transform: translateX(-720px); }
-  72%  { transform: translateX(-10px); }
+  0%   { transform: translateX(-430px); animation-timing-function: linear; }
+  70%  { transform: translateX(-26px); }
   100% { transform: translateX(0); }
 }
-/* Down through the swoop, back up to hover over the tag, then settle */
+/* Vertical range is deliberately much smaller than the horizontal, so the
+   path reads as a shallow glide: dip, rise, brief hover, settle. */
 @keyframes flyArc {
-  0%   { transform: translateY(-230px); }
-  48%  { transform: translateY(52px); }
-  72%  { transform: translateY(-24px); }
-  84%  { transform: translateY(-22px); }
+  0%   { transform: translateY(-120px); }
+  46%  { transform: translateY(28px); }
+  70%  { transform: translateY(-16px); }
+  82%  { transform: translateY(-15px); }
   100% { transform: translateY(0); }
 }
 
-/* Shorter run-up on small screens so the bird stays on-stage */
 @media (max-width: 700px) {
   @keyframes flyAcross {
-    0%   { transform: translateX(-380px); }
-    72%  { transform: translateX(-8px); }
+    0%   { transform: translateX(-280px); animation-timing-function: linear; }
+    70%  { transform: translateX(-20px); }
     100% { transform: translateX(0); }
   }
 }
