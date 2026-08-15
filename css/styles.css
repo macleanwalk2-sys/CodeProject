@@ -562,13 +562,13 @@ section { padding: 56px 0; }
   bottom: 100%;
   line-height: 0;
   pointer-events: none;
-  animation: flyAcross 2.50s linear 0.5s both;
+  animation: flyAcross 3.00s linear 0.5s both;
 }
 .cardinal {
   display: block;
   width: 42px;
   height: auto;
-  animation: flyArc 2.50s linear 0.5s both;
+  animation: flyArc 3.00s linear 0.5s both;
 }
 
 /* Values dialled in on the flight rig. Each track runs linear at the top level
@@ -595,7 +595,7 @@ section { padding: 56px 0; }
 .cardinal .bird {
   transform-box: fill-box;
   transform-origin: 50% 50%;
-  animation: pitch 2.50s linear 0.5s both;
+  animation: pitch 3.00s linear 0.5s both;
 }
 @keyframes pitch {
   0%   { transform: rotate(15deg);  animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
