@@ -521,30 +521,36 @@ section { padding: 56px 0; }
   bottom: 100%;
   line-height: 0;
   pointer-events: none;
-  animation: flyAcross 2.1s cubic-bezier(0.25, 0, 0.25, 1) 0.5s both;
+  animation: flyAcross 2.9s cubic-bezier(0.20, 0.55, 0.25, 1) 0.5s both;
 }
 .cardinal {
   display: block;
   width: 42px;
   height: auto;
-  animation: flyArc 2.1s ease-in-out 0.5s both;
+  animation: flyArc 2.9s ease-in-out 0.5s both;
 }
 
+/* Long horizontal run, mostly finished by the time he reaches the tag */
 @keyframes flyAcross {
-  from { transform: translateX(-540px); }
-  to   { transform: translateX(0); }
+  0%   { transform: translateX(-720px); }
+  72%  { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
 }
+/* Down through the swoop, back up to hover over the tag, then settle */
 @keyframes flyArc {
-  0%   { transform: translateY(-300px); }
-  55%  { transform: translateY(56px); }
+  0%   { transform: translateY(-230px); }
+  48%  { transform: translateY(52px); }
+  72%  { transform: translateY(-24px); }
+  84%  { transform: translateY(-22px); }
   100% { transform: translateY(0); }
 }
 
 /* Shorter run-up on small screens so the bird stays on-stage */
 @media (max-width: 700px) {
   @keyframes flyAcross {
-    from { transform: translateX(-300px); }
-    to   { transform: translateX(0); }
+    0%   { transform: translateX(-380px); }
+    72%  { transform: translateX(-8px); }
+    100% { transform: translateX(0); }
   }
 }
 
