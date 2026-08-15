@@ -521,36 +521,34 @@ section { padding: 56px 0; }
   bottom: 100%;
   line-height: 0;
   pointer-events: none;
-  animation: flyAcross 2.6s cubic-bezier(0.30, 0, 0.25, 1) 0.5s both;
+  animation: flyAcross 2.4s linear 0.5s both;
 }
 .cardinal {
   display: block;
   width: 42px;
   height: auto;
-  animation: flyArc 2.6s ease-in-out 0.5s both;
+  animation: flyArc 2.4s linear 0.5s both;
 }
 
-/* Starts just off the left edge so the whole swoop is on screen. Travels at a
-   steady horizontal pace, easing only into the final approach. */
+/* Two motions, nothing else. The swoop runs to 68% and eases out; the landing
+   runs from there. Each phase carries its own single easing curve, so there
+   are no waypoints inside a motion to restart the speed. The brief hover is
+   the natural pause where the swoop settles before the drop begins. */
 @keyframes flyAcross {
-  0%   { transform: translateX(-430px); animation-timing-function: linear; }
-  70%  { transform: translateX(-26px); }
+  0%   { transform: translateX(-430px); animation-timing-function: cubic-bezier(0.16, 0.55, 0.38, 1); }
+  68%  { transform: translateX(-8px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
   100% { transform: translateX(0); }
 }
-/* Vertical range is deliberately much smaller than the horizontal, so the
-   path reads as a shallow glide: dip, rise, brief hover, settle. */
 @keyframes flyArc {
-  0%   { transform: translateY(-120px); }
-  46%  { transform: translateY(28px); }
-  70%  { transform: translateY(-16px); }
-  82%  { transform: translateY(-15px); }
+  0%   { transform: translateY(-120px); animation-timing-function: cubic-bezier(0.20, 0.60, 0.35, 1); }
+  68%  { transform: translateY(-20px);  animation-timing-function: cubic-bezier(0.40, 0, 0.25, 1); }
   100% { transform: translateY(0); }
 }
 
 @media (max-width: 700px) {
   @keyframes flyAcross {
-    0%   { transform: translateX(-280px); animation-timing-function: linear; }
-    70%  { transform: translateX(-20px); }
+    0%   { transform: translateX(-280px); animation-timing-function: cubic-bezier(0.16, 0.55, 0.38, 1); }
+    68%  { transform: translateX(-8px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
     100% { transform: translateX(0); }
   }
 }
