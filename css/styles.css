@@ -530,27 +530,43 @@ section { padding: 56px 0; }
   animation: flyArc 2.4s linear 0.5s both;
 }
 
-/* Two motions: a U-shaped swoop to 70%, then the landing.
-   Horizontal runs at a steady pace the whole way, so the vertical dip traces
-   a U through space rather than a bounce in place. Symmetric easing into and
-   out of the low point means vertical speed passes through zero there, the
-   way it does at the bottom of a swing, so the turn stays smooth. */
+/* How a bird actually lands, in three beats:
+   dive (0-44%)   fast and nose-down, easing into the bottom of the U
+   flare (44-70%) pulls up and brakes hard, body pitching nose-high
+   settle (70%+)  drops the last inch onto the perch, level again
+   Horizontal covers most ground during the dive and brakes through the flare,
+   so the bird arrives over the tag with its speed already spent. */
 @keyframes flyAcross {
   0%   { transform: translateX(-430px); animation-timing-function: linear; }
-  70%  { transform: translateX(-8px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
+  44%  { transform: translateX(-140px); animation-timing-function: cubic-bezier(0.25, 0.5, 0.35, 1); }
+  70%  { transform: translateX(-7px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
   100% { transform: translateX(0); }
 }
 @keyframes flyArc {
-  0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
+  0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.22, 0.42, 0.5, 1); }
   44%  { transform: translateY(42px);   animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
-  70%  { transform: translateY(-22px);  animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
+  70%  { transform: translateY(-22px);  animation-timing-function: cubic-bezier(0.45, 0, 0.30, 1); }
   100% { transform: translateY(0); }
+}
+/* Body pitch follows the path: nose down through the dive, level at the
+   bottom, nose up in the flare, upright once perched. */
+.cardinal .bird {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: pitch 2.4s ease-in-out 0.5s both;
+}
+@keyframes pitch {
+  0%   { transform: rotate(11deg); }
+  44%  { transform: rotate(0deg); }
+  70%  { transform: rotate(-11deg); }
+  100% { transform: rotate(0deg); }
 }
 
 @media (max-width: 700px) {
   @keyframes flyAcross {
     0%   { transform: translateX(-280px); animation-timing-function: linear; }
-    70%  { transform: translateX(-8px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
+    44%  { transform: translateX(-92px);  animation-timing-function: cubic-bezier(0.25, 0.5, 0.35, 1); }
+    70%  { transform: translateX(-7px);   animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
     100% { transform: translateX(0); }
   }
 }
@@ -627,7 +643,8 @@ section { padding: 56px 0; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .tree-accent .canopy { animation: none; }
   .cardinal-flight,
-  .cardinal { animation: none; transform: none; }
+  .cardinal,
+  .cardinal .bird { animation: none; transform: none; }
   .cardinal { width: 42px; }
   .hero .eyebrow,
   .hero h1,
