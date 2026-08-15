@@ -536,21 +536,21 @@ section { padding: 56px 0; }
    settle (70%+)  drops the last inch onto the perch, level again
    Horizontal covers most ground during the dive and brakes through the flare,
    so the bird arrives over the tag with its speed already spent. */
-/* Horizontal holds a constant speed for the whole swoop; the waypoint sits at
-   the exact distance that pace would reach, so nothing changes rate mid-arc. */
+/* All the forward travel belongs to the swoop. Horizontal runs at a constant
+   pace through the dive, brakes through the flare, and is fully stopped over
+   the perch by 78% — so the landing that follows is straight down. */
 @keyframes flyAcross {
   0%   { transform: translateX(-430px); animation-timing-function: linear; }
-  46%  { transform: translateX(-187px); animation-timing-function: linear; }
-  78%  { transform: translateX(-18px);  animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
+  46%  { transform: translateX(-187px); animation-timing-function: cubic-bezier(0.25, 0.5, 0.45, 1); }
+  78%  { transform: translateX(0); }
   100% { transform: translateX(0); }
 }
 /* Vertical eases to zero at the bottom of the U and again at the top of the
-   flare. Zero speed at a turning point is what rounds the corner off; letting
-   it arrive at full speed would fold the arc into a V. */
+   flare, rounding both turns. From the stall it drops vertically and settles.  */
 @keyframes flyArc {
   0%   { transform: translateY(-130px); animation-timing-function: cubic-bezier(0.15, 0.45, 0.55, 1); }
   46%  { transform: translateY(38px);   animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
-  78%  { transform: translateY(-14px);  animation-timing-function: cubic-bezier(0.40, 0, 0.30, 1); }
+  78%  { transform: translateY(-26px);  animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
   100% { transform: translateY(0); }
 }
 /* Body pitch follows the path: nose down through the dive, level at the
