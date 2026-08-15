@@ -579,7 +579,10 @@ section { padding: 56px 0; }
    Vertical: down to the low point at 35%, up to the stall, then straight down.
    Pitch: nose down diving, level at the low point, nose up in the flare. */
 @keyframes flyAcross {
-  0%   { transform: translateX(-310px); animation-timing-function: cubic-bezier(0.225, 0.488, 0.42, 1); }
+  /* The tag sits a viewport-dependent distance from the left edge, so the
+     run-up is part fixed, part vw. That keeps him starting past the edge on a
+     laptop and on a wide monitor alike. */
+  0%   { transform: translateX(calc(-330px - 20vw)); animation-timing-function: cubic-bezier(0.225, 0.488, 0.42, 1); }
   76%  { transform: translateX(0); }
   100% { transform: translateX(0); }
 }
