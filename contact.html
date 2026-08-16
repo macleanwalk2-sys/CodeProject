@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact | Oakwood Marketing Services</title>
   <meta name="description" content="Get in touch with Oakwood Marketing Services for a free quote on website development, SEO, and custom marketing in Raleigh and the Triangle area.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=56">
+  <link rel="stylesheet" href="css/styles.css?v=57">
 </head>
 <body>
 
@@ -58,8 +59,13 @@
     <div class="container contact-grid reveal-group">
 
       <!-- Form -->
+      <!-- TO GO LIVE: create a free form at https://formspree.io, then paste the
+           endpoint it gives you into data-endpoint below, replacing PASTE_YOUR_
+           FORMSPREE_ENDPOINT_HERE. Nothing else needs to change. Until then the
+           form stays in demo mode and tells visitors to email instead, so no one
+           submits into a void. -->
       <div class="reveal">
-        <form id="contactForm" onsubmit="handleSubmit(event)">
+        <form id="contactForm" data-endpoint="PASTE_YOUR_FORMSPREE_ENDPOINT_HERE" method="POST">
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
@@ -67,6 +73,10 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone <span class="optional">(optional)</span></label>
+            <input type="tel" id="phone" name="phone">
           </div>
           <div class="form-group">
             <label for="service">What can we help with?</label>
@@ -81,9 +91,15 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="5" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Send Message</button>
-          <p class="form-note">This is a demo form. Messages aren't sent yet. Connect a form service or email handler to go live.</p>
-          <p id="formSuccess" style="display:none; color:#1f7a4d; font-weight:600; margin-top:14px;">Thanks! Your message has been received. We'll be in touch soon.</p>
+
+          <!-- Spam trap: real people never fill a hidden field in. -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"
+                 style="position:absolute; left:-9999px; width:1px; height:1px;">
+
+          <button type="submit" class="btn btn-primary" id="submitBtn">Send Message</button>
+          <p class="form-note" id="formNote">Not connected yet. Please email <a href="mailto:hello@oakwoodmarketing.com">hello@oakwoodmarketing.com</a> and we'll get right back to you.</p>
+          <p class="form-status form-success" id="formSuccess" hidden>Thanks! Your message came through. We'll be in touch shortly.</p>
+          <p class="form-status form-error" id="formError" hidden>Something went wrong sending that. Please email <a href="mailto:hello@oakwoodmarketing.com">hello@oakwoodmarketing.com</a> instead.</p>
         </form>
       </div>
 
@@ -144,11 +160,54 @@
   </footer>
 
   <script>
-    function handleSubmit(e) {
-      e.preventDefault();
-      document.getElementById('contactForm').reset();
-      document.getElementById('formSuccess').style.display = 'block';
-    }
+    (function () {
+      var form    = document.getElementById('contactForm');
+      var btn     = document.getElementById('submitBtn');
+      var note    = document.getElementById('formNote');
+      var success = document.getElementById('formSuccess');
+      var error   = document.getElementById('formError');
+
+      var endpoint = form.getAttribute('data-endpoint');
+      var live = endpoint && endpoint.indexOf('PASTE_YOUR') === -1;
+
+      // Once an endpoint is set, the form posts for real and the "not connected"
+      // note goes away on its own. No second edit needed.
+      if (live) {
+        form.setAttribute('action', endpoint);
+        note.hidden = true;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        success.hidden = true;
+        error.hidden = true;
+
+        if (!live) {
+          note.hidden = false;
+          note.classList.add('form-note-flash');
+          setTimeout(function () { note.classList.remove('form-note-flash'); }, 900);
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+
+        fetch(endpoint, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        }).then(function (res) {
+          if (!res.ok) throw new Error('Request failed');
+          form.reset();
+          success.hidden = false;
+        }).catch(function () {
+          error.hidden = false;
+        }).then(function () {
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+        });
+      });
+    })();
   </script>
 
   <script src="js/main.js"></script>
