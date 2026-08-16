@@ -177,6 +177,11 @@ a:hover { text-decoration: underline; }
   border-radius: 14px;
   box-shadow: var(--shadow);
   display: block;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.hero-img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(31, 122, 77, 0.16);
 }
 .img-caption {
   font-size: 0.8rem;
@@ -197,6 +202,7 @@ a:hover { text-decoration: underline; }
   padding: 6px 12px;
   border-radius: 999px;
   margin-bottom: 18px;
+  box-shadow: inset 0 0 0 1px rgba(31, 122, 77, 0.14);
 }
 
 /* ---------- Sections ---------- */
@@ -204,7 +210,7 @@ section { padding: 56px 0; }
 .section-soft { background: var(--bg-soft); }
 
 .section-head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
-.section-head h2 { font-size: 2rem; margin: 0 0 12px; letter-spacing: -0.4px; }
+.section-head h2 { font-size: 2rem; margin: 0 0 12px; letter-spacing: -0.6px; }
 .section-head p { color: var(--muted); margin: 0; font-size: 1.05rem; }
 
 /* ---------- Cards ---------- */
@@ -218,6 +224,8 @@ section { padding: 56px 0; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 26px 22px;
+  position: relative;
+  overflow: hidden;
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 .card:hover {
@@ -225,6 +233,20 @@ section { padding: 56px 0; }
   transform: translateY(-3px);
   border-color: #cfe0d6;
 }
+/* Green accent line that draws in across the top on hover */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), #3aa76d);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.card:hover::before { transform: scaleX(1); }
 /* Line icons rather than emoji: emoji render differently on every platform and
    never match the brand colour. These inherit currentColor, so the tile can
    invert cleanly on hover. */
@@ -237,13 +259,17 @@ section { padding: 56px 0; }
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  /* Transform only. The colour swap below lands instantly, which is how this
+     has always looked: a later rule used to reset this shorthand and drop the
+     colour transition. Folded in as the winning value rather than "fixed", so
+     hover is unchanged. */
+  transition: transform 0.2s ease;
 }
 .card .icon svg { width: 23px; height: 23px; display: block; }
 .card:hover .icon {
   background: var(--green);
   color: #fff;
-  transform: scale(1.06);
+  transform: scale(1.08);
 }
 .card h3 { margin: 0 0 8px; font-size: 1.2rem; }
 .card p { margin: 0; color: var(--muted); font-size: 0.98rem; }
@@ -409,7 +435,7 @@ section { padding: 56px 0; }
   padding: 42px 0;
   text-align: center;
 }
-.page-header h1 { margin: 0 0 10px; font-size: 2.3rem; letter-spacing: -0.5px; }
+.page-header h1 { margin: 0 0 10px; font-size: 2.3rem; letter-spacing: -0.6px; }
 .page-header p { margin: 0; color: var(--muted); font-size: 1.1rem; }
 
 /* Leaf clusters peeking in from both edges, echoing the canopy on the home
@@ -437,9 +463,6 @@ section { padding: 56px 0; }
 }
 
 /* ---------- About ---------- */
-.prose { max-width: 720px; margin: 0 auto; }
-.prose p { color: var(--ink); font-size: 1.05rem; }
-.prose h3 { margin-top: 32px; }
 
 .stats {
   display: grid;
@@ -798,6 +821,10 @@ section { padding: 56px 0; }
 .site-footer a { color: #cdd6d0; }
 .site-footer a:hover { color: #fff; }
 .footer-links { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; }
+/* The brand mark would inherit the dark ink colour on the dark footer. */
+.site-footer .brand { color: #fff; }
+/* Honeypot: pushed off-screen rather than display:none, which bots skip. */
+.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; }
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,0.12);
   margin-top: 24px;
@@ -927,11 +954,6 @@ section { padding: 56px 0; }
   color: #fff;
 }
 
-/* Eyebrow: subtle ring for definition */
-.eyebrow {
-  box-shadow: inset 0 0 0 1px rgba(31, 122, 77, 0.14);
-}
-
 /* Primary button: lift + soft shadow so it reads as clickable */
 .btn-primary {
   box-shadow: 0 6px 16px rgba(31, 122, 77, 0.22);
@@ -940,40 +962,6 @@ section { padding: 56px 0; }
   box-shadow: 0 10px 24px rgba(31, 122, 77, 0.30);
   transform: translateY(-1px);
 }
-
-/* Cards: green accent line that draws in on hover */
-.card {
-  position: relative;
-  overflow: hidden;
-}
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--green), #3aa76d);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.25s ease;
-}
-.card:hover::before { transform: scaleX(1); }
-
-/* Card icons: gentle scale on hover */
-.card .icon { transition: transform 0.2s ease; }
-.card:hover .icon { transform: scale(1.08); }
-
-/* Hero image: soft float */
-.hero-img { transition: transform 0.35s ease, box-shadow 0.35s ease; }
-.hero-img:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 40px rgba(31, 122, 77, 0.16);
-}
-
-/* Section headings: a touch more presence */
-.section-head h2,
-.page-header h1 { letter-spacing: -0.6px; }
 
 /* ---------- Ambient light behind the skyline ---------- */
 /* Two soft lights drifting at different speeds and sizes. Because they move
