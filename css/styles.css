@@ -544,9 +544,18 @@ section { padding: 56px 0; }
 .founder-contact a { color: var(--ink); }
 .founder-contact a:hover { color: var(--green); }
 
+/* The three words close the section, separated by a rule rather than a gap so
+   they read as a summary of what is above rather than a new section. */
+.founder-stats {
+  margin-top: 52px;
+  padding-top: 38px;
+  border-top: 1px solid var(--border);
+}
+
 @media (max-width: 820px) {
   .founder-grid { grid-template-columns: 1fr; gap: 30px; }
   .founder-photo { box-shadow: 9px 9px 0 rgba(31, 122, 77, 0.14); }
+  .founder-stats { margin-top: 38px; padding-top: 30px; }
 }
 
 /* ---------- Contact ---------- */
