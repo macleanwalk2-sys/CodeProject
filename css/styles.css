@@ -1067,7 +1067,10 @@ section { padding: 56px 0; }
 .cta-tree {
   position: absolute;
   bottom: 0;
-  width: 172px;
+  /* The artwork is 120x200, so this width renders about 327px tall and the
+     trunk carries the tree up through the section rather than sitting in the
+     bottom corner. */
+  width: 196px;
   height: auto;
   z-index: 0;
   transform-origin: 50% 100%;
