@@ -21,6 +21,10 @@
 
 html { scroll-behavior: smooth; }
 
+/* The header is sticky, so jumping to an anchor would park the target
+   underneath it. Stop short by the header height plus a little breathing room. */
+[id] { scroll-margin-top: 96px; }
+
 body {
   margin: 0;
   font-family: var(--font-body);
