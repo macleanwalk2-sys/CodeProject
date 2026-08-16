@@ -626,6 +626,54 @@ section { padding: 56px 0; }
   .work-grid { grid-template-columns: 1fr; }
 }
 
+/* Home page only. The tree scene ends on a soft green ground tone, so the
+   portfolio starts on that exact tone and settles back to the standard soft
+   grey by the bottom. The two sections then read as one continuous field
+   instead of meeting at a visible line. */
+.work-field {
+  background: linear-gradient(180deg, #eef6f1 0%, var(--bg-soft) 100%);
+  /* Hides the cardinal while it is still off to the right, which also stops
+     the run-up from widening the page. */
+  overflow: hidden;
+}
+
+/* ---------- Cardinal on the portfolio ---------- */
+/* The same bird and the same three tracks as the hero, untouched. The only
+   addition is scaleX(-1) on this wrapper, which mirrors the whole coordinate
+   system: the run-up starts off the right edge instead of the left, the swoop
+   reads the same way round, and the bird faces the way it is travelling.
+   Anchored to the grid rather than to a card, because the cards clip their own
+   overflow and would cut the flight off. */
+.work-field .work-grid { position: relative; }
+.cardinal-perch {
+  position: absolute;
+  right: 46px;
+  bottom: 100%;
+  line-height: 0;
+  pointer-events: none;
+  transform: scaleX(-1);
+  z-index: 2;
+}
+/* .cardinal-flight carries the animation; the perch handles placement. */
+.cardinal-perch .cardinal-flight {
+  position: static;
+  display: block;
+}
+/* Held on the first frame until the section is actually on screen, otherwise
+   the flight is over before anyone scrolls down to it. */
+.cardinal-perch .cardinal-flight,
+.cardinal-perch .cardinal,
+.cardinal-perch .bird { animation-play-state: paused; }
+.cardinal-perch.visible .cardinal-flight,
+.cardinal-perch.visible .cardinal,
+.cardinal-perch.visible .bird { animation-play-state: running; }
+
+/* One column at this width, so there is no rightmost card to aim at and not
+   much room for the run-up. */
+@media (max-width: 640px) {
+  .cardinal-perch { display: none; }
+}
+
 /* ---------- Contact ---------- */
 .contact-grid {
   display: grid;
