@@ -570,18 +570,23 @@ section { padding: 56px 0; }
   grid-template-columns: repeat(3, 1fr);
   gap: 26px;
 }
+/* The default card border is a near-white green that vanishes against the
+   grass field behind this section, leaving the cards looking like they bleed
+   into the background. A firmer edge plus a resting shadow lifts them off it,
+   and keeps them looking deliberate on the plain white pages too. */
 .work-card {
   background: #fff;
-  border: 1px solid var(--border);
+  border: 1px solid #cbdfd4;
   border-radius: var(--radius);
   overflow: hidden;
   padding: 0 0 22px;
+  box-shadow: 0 6px 18px rgba(18, 78, 49, 0.10);
   transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
 }
 .work-card:hover {
-  box-shadow: var(--shadow);
+  box-shadow: 0 14px 30px rgba(18, 78, 49, 0.16);
   transform: translateY(-3px);
-  border-color: #cfe0d6;
+  border-color: var(--green);
 }
 
 /* Fixed 8:5 frame so every card lines up whether the artwork inside is a
