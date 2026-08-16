@@ -257,6 +257,21 @@ section { padding: 56px 0; }
   margin: 0 0 26px;
   font-size: 0.98rem;
 }
+/* Access is not a tier feature, so it sits above the cards as one promise
+   that applies to all of them. */
+.price-promise {
+  max-width: 660px;
+  margin: 0 auto 26px;
+  padding: 14px 20px;
+  background: var(--green-light);
+  border: 1px solid #cfe4d8;
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.price-promise strong { color: var(--green); }
+
 .price-cards {
   display: grid;
   gap: 20px;
