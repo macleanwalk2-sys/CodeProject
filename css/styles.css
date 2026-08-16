@@ -704,51 +704,6 @@ section { padding: 56px 0; }
   .cardinal-perch { display: none; }
 }
 
-/* ---------- Pricing leaves ---------- */
-/* Four clusters down the sides of the pricing section rather than one shape
-   mirrored: each has its own count, sizes and spacing, sits at its own height,
-   and sways on its own clock, so no two ever line up or move together. Kept
-   faint and mostly off the edge so they stay background. */
-#pricing { position: relative; overflow: hidden; }
-#pricing > .container { position: relative; z-index: 1; }
-.price-leaves {
-  position: absolute;
-  width: 132px;
-  height: auto;
-  opacity: 0.13;
-  pointer-events: none;
-  z-index: 0;
-}
-.price-leaves.l1 { left: 0;  top: 4%;  transform: translateX(-38%); }
-.price-leaves.r1 { right: 0; top: 21%; transform: translateX(36%) scaleX(-1); }
-.price-leaves.l2 { left: 0;  top: 54%; transform: translateX(-44%); }
-.price-leaves.r2 { right: 0; top: 73%; transform: translateX(33%) scaleX(-1); }
-
-/* Pivots at the edge the cluster grows in from, so it hinges rather than
-   drifting sideways. The mirrored ones inherit the same origin because
-   scaleX(-1) flips their coordinate system with them. */
-.price-leaves .leaf-sway {
-  transform-box: fill-box;
-  transform-origin: 12% 50%;
-  animation: leafSway 9s ease-in-out infinite alternate;
-}
-/* Prime numbers of seconds and negative delays: they start mid-cycle and drift
-   apart instead of falling into step. */
-.price-leaves.l1 .leaf-sway { animation-duration: 8s;    animation-delay: -2s; }
-.price-leaves.r1 .leaf-sway { animation-duration: 10.5s; animation-delay: -6s; }
-.price-leaves.l2 .leaf-sway { animation-duration: 9.4s;  animation-delay: -1s; }
-.price-leaves.r2 .leaf-sway { animation-duration: 11.8s; animation-delay: -8s; }
-
-@keyframes leafSway {
-  from { transform: rotate(-1.8deg); }
-  to   { transform: rotate(1.8deg); }
-}
-
-/* Not enough side margin left to hold them without crowding the cards. */
-@media (max-width: 900px) {
-  .price-leaves { display: none; }
-}
-
 /* ---------- Contact ---------- */
 .contact-grid {
   display: grid;
@@ -1213,7 +1168,6 @@ section { padding: 56px 0; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .cta-tree { transform: none; transition: none; }
   .canopy { animation: none; }
-  .price-leaves .leaf-sway { animation: none; }
   .hero-visual::before,
   .hero-visual::after { animation: none; }
   .cardinal-flight,
