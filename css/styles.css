@@ -626,15 +626,25 @@ section { padding: 56px 0; }
   .work-grid { grid-template-columns: 1fr; }
 }
 
-/* Home page only. The tree scene ends on a soft green ground tone, so the
-   portfolio starts on that exact tone and settles back to the standard soft
-   grey by the bottom. The two sections then read as one continuous field
-   instead of meeting at a visible line. */
+/* Home page only. The portfolio begins on the grass colour itself, so the hill
+   above appears to run straight into it, then the ground fades out over the
+   top half of the section.
+
+   #c5ddd0 is what the grass actually renders as, not what it is declared as:
+   the hill is #1f7a4d drawn inside .section-accents at opacity 0.20, sitting
+   on the scene gradient's end colour #eef6f1. Compositing those gives this
+   value, and matching it exactly is what makes the seam disappear. If any of
+   those three change, this has to be recomputed with them. */
 .work-field {
-  background: linear-gradient(180deg, #eef6f1 0%, var(--bg-soft) 100%);
+  background: linear-gradient(180deg, #c5ddd0 0%, var(--bg-soft) 55%);
   /* Hides the cardinal while it is still off to the right, which also stops
      the run-up from widening the page. */
   overflow: hidden;
+}
+/* .section-accents is hidden at this width, so there is no hill to meet and
+   the scene ends on its bare gradient instead. */
+@media (max-width: 900px) {
+  .work-field { background: linear-gradient(180deg, #eef6f1 0%, var(--bg-soft) 55%); }
 }
 
 /* ---------- Cardinal on the portfolio ---------- */
