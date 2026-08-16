@@ -219,16 +219,25 @@ section { padding: 56px 0; }
   transform: translateY(-3px);
   border-color: #cfe0d6;
 }
+/* Line icons rather than emoji: emoji render differently on every platform and
+   never match the brand colour. These inherit currentColor, so the tile can
+   invert cleanly on hover. */
 .card .icon {
-  width: 44px; height: 44px;
-  border-radius: 10px;
+  width: 46px; height: 46px;
+  border-radius: 12px;
   background: var(--green-light);
   color: var(--green);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.card .icon svg { width: 23px; height: 23px; display: block; }
+.card:hover .icon {
+  background: var(--green);
+  color: #fff;
+  transform: scale(1.06);
 }
 .card h3 { margin: 0 0 8px; font-size: 1.2rem; }
 .card p { margin: 0; color: var(--muted); font-size: 0.98rem; }
@@ -401,20 +410,24 @@ section { padding: 56px 0; }
    page. Clipped by the section so only part of each cluster shows. */
 .page-header { position: relative; overflow: hidden; }
 .page-header > .container { position: relative; z-index: 1; }
+/* Sized off the section's height so the cluster spans it top to bottom, and
+   the width follows from the artwork's own proportions. */
 .leaf-cluster {
   position: absolute;
-  top: 50%;
-  width: 132px;
-  height: auto;
+  top: 0;
+  height: 100%;
+  width: auto;
   opacity: 0.15;
   pointer-events: none;
   z-index: 0;
 }
-.leaf-cluster.left  { left: 0;  transform: translate(-34%, -50%); }
-.leaf-cluster.right { right: 0; transform: translate(34%, -50%) scaleX(-1); }
+.leaf-cluster.left  { left: 0;  transform: translateX(-34%); }
+.leaf-cluster.right { right: 0; transform: translateX(34%) scaleX(-1); }
 
 @media (max-width: 700px) {
-  .leaf-cluster { width: 92px; opacity: 0.11; }
+  .leaf-cluster { opacity: 0.1; }
+  .leaf-cluster.left  { transform: translateX(-48%); }
+  .leaf-cluster.right { transform: translateX(48%) scaleX(-1); }
 }
 
 /* ---------- About ---------- */
