@@ -727,6 +727,38 @@ section { padding: 56px 0; }
   .cardinal-perch { display: none; }
 }
 
+/* ---------- Nest on the CTA ---------- */
+/* Sits on the band's top edge and shudders briefly every few seconds, as if
+   something inside is about to get out. Long still gap between shakes, or it
+   reads as a rattle rather than a hatch. */
+.cta-band { position: relative; }
+.nest {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 96px;
+  height: auto;
+  margin-left: -48px;
+  margin-bottom: -15px;
+  display: block;
+  z-index: 2;
+  pointer-events: none;
+}
+.nest-wobble {
+  transform-box: fill-box;
+  transform-origin: 50% 94%;
+  animation: nestShake 5.4s ease-in-out infinite;
+}
+@keyframes nestShake {
+  0%, 78%, 100% { transform: rotate(0deg); }
+  81%  { transform: rotate(-4deg); }
+  84%  { transform: rotate(3.4deg); }
+  87%  { transform: rotate(-2.6deg); }
+  90%  { transform: rotate(1.8deg); }
+  94%  { transform: rotate(-0.8deg); }
+  97%  { transform: rotate(0deg); }
+}
+
 /* ---------- Contact ---------- */
 .contact-grid {
   display: grid;
@@ -1159,6 +1191,7 @@ section { padding: 56px 0; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .cta-tree { transform: none; transition: none; }
   .canopy { animation: none; }
+  .nest-wobble { animation: none; }
   .hero-visual::before,
   .hero-visual::after { animation: none; }
   .cardinal-flight,
