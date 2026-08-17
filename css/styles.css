@@ -727,36 +727,51 @@ section { padding: 56px 0; }
   .cardinal-perch { display: none; }
 }
 
-/* ---------- Nest on the CTA ---------- */
-/* Sits on the band's top edge and shudders briefly every few seconds, as if
-   something inside is about to get out. Long still gap between shakes, or it
-   reads as a rattle rather than a hatch. */
+/* ---------- Egg on the CTA ---------- */
+/* One egg set half into the band's top edge, lit from behind. The glow breathes
+   slowly and the egg itself only stirs once every several seconds, so it reads
+   as something alive rather than as an ornament that jitters. */
 .cta-band { position: relative; }
-.nest {
+.egg-mark {
   position: absolute;
   bottom: 100%;
   left: 50%;
   width: 96px;
-  height: auto;
+  height: 96px;
   margin-left: -48px;
-  margin-bottom: -15px;
-  display: block;
+  margin-bottom: -48px;   /* exactly half of it sits over the band */
   z-index: 2;
   pointer-events: none;
 }
-.nest-wobble {
-  transform-box: fill-box;
-  transform-origin: 50% 94%;
-  animation: nestShake 5.4s ease-in-out infinite;
+.egg-glow {
+  position: absolute;
+  inset: -58%;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 216, 145, 0.60) 0%,
+    rgba(255, 205, 120, 0.26) 44%,
+    rgba(255, 205, 120, 0) 70%);
+  filter: blur(16px);
+  animation: eggGlow 5s ease-in-out infinite alternate;
 }
-@keyframes nestShake {
-  0%, 78%, 100% { transform: rotate(0deg); }
-  81%  { transform: rotate(-4deg); }
-  84%  { transform: rotate(3.4deg); }
-  87%  { transform: rotate(-2.6deg); }
-  90%  { transform: rotate(1.8deg); }
-  94%  { transform: rotate(-0.8deg); }
-  97%  { transform: rotate(0deg); }
+.egg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(12, 48, 32, 0.22));
+  transform-origin: 50% 82%;
+  animation: eggStir 8s ease-in-out infinite;
+}
+@keyframes eggGlow {
+  from { opacity: 0.55; transform: scale(0.93); }
+  to   { opacity: 1;    transform: scale(1.07); }
+}
+@keyframes eggStir {
+  0%, 88%, 100% { transform: rotate(0deg); }
+  91% { transform: rotate(-2.2deg); }
+  94% { transform: rotate(1.6deg); }
+  97% { transform: rotate(-0.7deg); }
 }
 
 /* ---------- Contact ---------- */
@@ -1201,7 +1216,7 @@ section { padding: 56px 0; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .cta-tree { transform: none; transition: none; }
   .canopy { animation: none; }
-  .nest-wobble { animation: none; }
+  .egg, .egg-glow { animation: none; }
   .hero-visual::before,
   .hero-visual::after { animation: none; }
   .cardinal-flight,
