@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=73">
+  <link rel="stylesheet" href="css/styles.css?v=74">
 </head>
 <body>
 
@@ -267,19 +267,29 @@
     <div class="grove-top">
 
       <div class="grove-tree" aria-hidden="true">
-        <svg class="grove-canopy" viewBox="0 0 860 340">
-          <g class="canopy" fill="#1f7a4d">
-            <circle cx="430" cy="150" r="130"/>
-            <circle cx="430" cy="78"  r="74"/>
-            <circle cx="300" cy="100" r="88"/>
-            <circle cx="560" cy="100" r="88"/>
-            <circle cx="215" cy="160" r="80"/>
-            <circle cx="645" cy="160" r="80"/>
-            <circle cx="300" cy="215" r="78"/>
-            <circle cx="560" cy="215" r="78"/>
-            <circle cx="430" cy="232" r="88"/>
-            <circle cx="150" cy="200" r="58"/>
-            <circle cx="710" cy="200" r="58"/>
+        <!-- A round canopy: one core, a ring of eight big circles around it for
+             the mass, and a second offset ring of small ones for the scalloped
+             edge. Centre (500, 440), silhouette roughly 880 across by 820 tall,
+             so it reads as a circle rather than a wide cap. -->
+        <svg class="grove-canopy" viewBox="0 0 1000 880">
+          <g class="canopy">
+            <circle cx="500" cy="440" r="260"/>
+            <circle cx="500" cy="240" r="210"/>
+            <circle cx="663" cy="299" r="210"/>
+            <circle cx="730" cy="440" r="210"/>
+            <circle cx="663" cy="581" r="210"/>
+            <circle cx="500" cy="640" r="210"/>
+            <circle cx="337" cy="581" r="210"/>
+            <circle cx="270" cy="440" r="210"/>
+            <circle cx="337" cy="299" r="210"/>
+            <circle cx="626" cy="163" r="110"/>
+            <circle cx="805" cy="325" r="110"/>
+            <circle cx="805" cy="555" r="110"/>
+            <circle cx="626" cy="717" r="110"/>
+            <circle cx="374" cy="717" r="110"/>
+            <circle cx="195" cy="555" r="110"/>
+            <circle cx="195" cy="325" r="110"/>
+            <circle cx="374" cy="163" r="110"/>
           </g>
         </svg>
         <span class="grove-trunk"></span>
@@ -309,7 +319,12 @@
         </div>
       </section>
 
-      <img src="assets/hill.svg" alt="" class="grove-hill" aria-hidden="true">
+      <!-- Inline rather than <img src="assets/hill.svg">, so it can be filled
+           with the same flat --grass as the tree above and the CTA below. An
+           external image would keep its own dark green. -->
+      <svg class="grove-hill" viewBox="0 0 1200 160" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,160 L0,95 C260,18 940,18 1200,95 L1200,160 Z"/>
+      </svg>
     </div>
 
     <!-- CTA, the same tone as the hill so the slope runs straight into it -->

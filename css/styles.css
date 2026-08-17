@@ -9,6 +9,12 @@
   --muted: #545c58;
   --white: #ffffff;
   --bg-soft: #f6f9f7;
+  /* The one grass tone. This is what a tinted tree or hill actually renders as
+     on the home page, so anything that has to sit flush against grass is filled
+     with this flat value instead of stacking its own opacity. Two separately
+     tinted layers that overlap composite to a darker patch; one flat colour
+     cannot. */
+  --grass: #c5ddd0;
   --border: #e2ebe5;
   --radius: 10px;
   --shadow: 0 6px 24px rgba(31, 122, 77, 0.08);
@@ -581,11 +587,25 @@ section { padding: 56px 0; }
 .founder-contact a:hover { color: var(--green); }
 
 /* The three words close the section, separated by a rule rather than a gap so
-   they read as a summary of what is above rather than a new section. */
+   they read as a summary of what is above rather than a new section. The rule
+   is a short centred pseudo-element, not a border on the box: a border runs the
+   full container width and cuts straight across the trees standing at either
+   edge. */
 .founder-stats {
+  position: relative;
   margin-top: 52px;
   padding-top: 38px;
-  border-top: 1px solid var(--border);
+}
+.founder-stats::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 260px;
+  max-width: 58%;
+  height: 1px;
+  transform: translateX(-50%);
+  background: var(--border);
 }
 
 @media (max-width: 820px) {
@@ -677,13 +697,13 @@ section { padding: 56px 0; }
    above appears to run straight into it, then the ground fades out over the
    top half of the section.
 
-   #c5ddd0 is what the grass actually renders as, not what it is declared as:
+   --grass is what the grass actually renders as, not what it is declared as:
    the hill is #1f7a4d drawn inside .section-accents at opacity 0.20, sitting
-   on the scene gradient's end colour #eef6f1. Compositing those gives this
+   on the scene gradient's end colour #eef6f1. Compositing those gives that
    value, and matching it exactly is what makes the seam disappear. If any of
-   those three change, this has to be recomputed with them. */
+   those three change, the token has to be recomputed with them. */
 .work-field {
-  background: linear-gradient(180deg, #c5ddd0 0%, var(--bg-soft) 55%);
+  background: linear-gradient(180deg, var(--grass) 0%, var(--bg-soft) 55%);
   /* Hides the cardinal while it is still off to the right, which also stops
      the run-up from widening the page. */
   overflow: hidden;
@@ -839,31 +859,50 @@ section { padding: 56px 0; }
 .grove > section,
 .grove-top > section { position: relative; z-index: 1; background: transparent; }
 
-/* Canopy and trunk share one opacity wrapper, so where they overlap the green
-   does not double up. */
+/* Canopy, trunk, hill and the CTA below it are all filled with the same flat
+   --grass, at full opacity. Nothing here is tinted, so the places they overlap
+   (trunk through canopy, trunk into hill, hill into the CTA) are the same
+   colour on both sides and the joins simply do not exist. Tinting each layer
+   separately is what produced the dark patch where they crossed: two 26% layers
+   over each other read as 45%. */
 .grove-tree {
   position: absolute;
   left: 50%;
   top: -34px;
   bottom: 34px;
-  width: 860px;
+  width: min(1040px, 96vw);
   transform: translateX(-50%);
-  opacity: 0.26;
   z-index: 0;
   pointer-events: none;
 }
-.grove-canopy { position: absolute; left: 0; top: 0; width: 100%; height: auto; }
+.grove-canopy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+  fill: var(--grass);
+}
+/* Starts up inside the canopy, where it is hidden, so only the length between
+   the leaves and the hill is ever seen. Thick enough to carry a canopy this
+   size: a thin stem under a round crown reads as a shrub. */
 .grove-trunk {
   position: absolute;
   left: 50%;
-  top: 250px;
+  top: 50%;
   bottom: 0;
-  width: 58px;
+  width: 96px;
   transform: translateX(-50%);
-  background: var(--green);
+  background: var(--grass);
   /* Flares out at the base, the way the CTA trees do. */
   clip-path: polygon(32% 0, 68% 0, 100% 100%, 0 100%);
 }
+
+/* The canopy is close to a circle now, so the section has to be tall enough to
+   hold one. The copy sits across the middle of it, where the canopy is widest,
+   and the deep bottom padding is what leaves a length of trunk standing between
+   the leaves and the hill. */
+.custom-services { padding: 260px 0 390px; }
 
 /* Services either side of the trunk. The middle track is empty on purpose:
    it is the lane the trunk runs down. */
@@ -871,7 +910,9 @@ section { padding: 56px 0; }
   display: grid;
   grid-template-columns: 1fr 150px 1fr;
   gap: 16px 20px;
-  max-width: 900px;
+  /* Narrower than the canopy is wide, so no list item ever pokes out past the
+     leaves. */
+  max-width: 840px;
   margin: 46px auto 0;
   align-items: start;
 }
@@ -897,6 +938,15 @@ section { padding: 56px 0; }
 .grove-col.right li { padding-left: 24px; }
 .grove-col.right li::before { left: 0;  border-radius: 0 10px 0 10px; }
 
+/* The canopy shrinks with the viewport, so the room the copy needs inside it
+   shrinks too. */
+@media (max-width: 1080px) {
+  .custom-services { padding: 220px 0 360px; }
+}
+@media (max-width: 900px) {
+  .custom-services { padding: 175px 0 265px; }
+}
+
 @media (max-width: 820px) {
   .grove-cols { grid-template-columns: 1fr; max-width: 420px; }
   .grove-col.left { text-align: left; }
@@ -904,17 +954,16 @@ section { padding: 56px 0; }
   .grove-col.left li::before { right: auto; left: 0; border-radius: 0 10px 0 10px; }
   .grove-lane { display: none; }
   .grove-tree { display: none; }
+  /* No tree to sit inside, so the section goes back to normal spacing. */
+  .custom-services { padding: 56px 0 24px; }
 }
 
-/* The hill carries the same tint as the tree rather than a solid dark green,
-   so the whole grove reads as one drawing. */
-.grove-hill { display: block; width: 100%; height: 130px; opacity: 0.26; }
+.grove-hill { display: block; width: 100%; height: 130px; fill: var(--grass); }
 
-/* #b8d6c6 is what the hill actually renders as: #1f7a4d at 0.26 over the
-   grove's end colour. Matching it exactly is what lets the slope run straight
-   into the CTA with no seam. Recompute this if either value changes. */
+/* The same flat --grass the hill is drawn in, so the slope runs straight into
+   the CTA with nothing to mark where one ends and the other starts. */
 .grove > .grove-cta {
-  background: #b8d6c6;
+  background: var(--grass);
   padding: 8px 0 78px;
 }
 .cta-band.bare {
