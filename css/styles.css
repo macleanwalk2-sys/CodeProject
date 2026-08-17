@@ -793,14 +793,24 @@ section { padding: 56px 0; }
 }
 .contact-info .info-item {
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
+  gap: 14px;
+  align-items: center;
   margin-bottom: 20px;
 }
+/* Line icons in a tile rather than emoji: emoji render differently on every
+   platform, sit on their own baseline, and never match the brand colour. */
 .contact-info .info-item .icon {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--green-light);
   color: var(--green);
-  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
+.contact-info .info-item .icon svg { width: 19px; height: 19px; display: block; }
 .form-note {
   font-size: 0.85rem;
   color: var(--muted);
@@ -1210,4 +1220,22 @@ section { padding: 56px 0; }
   }
   .card:hover { transform: none; }
   .hero-img:hover { transform: none; }
+}
+
+/* ---------- Scroll root ---------- */
+/* Sits above section backgrounds, not behind them: a tinted section paints its
+   own background and would otherwise chop the root into pieces. Safe on top
+   because it stays in the gutter, clear of the text column, and takes no
+   pointer events. Hidden where there is no gutter to spare. */
+.root-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+.root-layer svg { display: block; width: 100%; height: 100%; }
+@media (max-width: 1200px) {
+  .root-layer { display: none; }
 }

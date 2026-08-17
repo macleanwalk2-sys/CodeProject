@@ -9,9 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=66">
+  <link rel="stylesheet" href="css/styles.css?v=67">
 </head>
 <body>
+
+  <!-- Scroll root. Tuning lives in js/root.js -->
+  <div class="root-layer" aria-hidden="true"><svg></svg></div>
 
   <!-- Header -->
   <header class="site-header">
@@ -55,7 +58,7 @@
   </section>
 
   <!-- Services -->
-  <section>
+  <section data-root-branch>
     <div class="container">
       <div class="cards reveal-group">
         <div class="card reveal">
@@ -78,7 +81,7 @@
   </section>
 
   <!-- Pricing -->
-  <section class="section-soft" id="pricing">
+  <section class="section-soft" id="pricing" data-root-branch>
     <div class="container">
 
       <div class="section-head reveal">
@@ -183,7 +186,7 @@
 
 
   <!-- Portfolio -->
-  <section class="work-section">
+  <section class="work-section" data-root-branch>
     <div class="container">
       <div class="section-head reveal">
         <h2>Recent work</h2>
@@ -292,5 +295,6 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/root.js"></script>
 </body>
 </html>
