@@ -16,12 +16,15 @@
   "use strict";
 
   var CONFIG = {
-    gutter:      46,    // px to the left of the content column
+    gutter:      64,    // px to the left of the content column
     width0:      26,    // thickness at the knot
-    width1:      3,     // thickness at the tip
+    width1:      6,     // thickness at the very tip
+    taperCurve:  2.6,   // >1 holds the thickness and drops it late
+    startAt:     0.5,   // how far into the start element the knot sits
     segment:     150,   // px per straight run. Lower = more kinks
     swing:       48,    // furthest a kink can jump sideways
-    branchEvery: 132,   // px of spine between side branches
+    branchEvery: 300,   // px of spine between side branches
+    branchLen:   1.8,   // multiplier on branch reach
     knot:        1.05,  // knot radius as a multiple of width0
     lead:        0.72,  // how far below the fold the tip sits, 0 to 1 of a screen
     minViewport: 1200,  // below this there is no gutter to spare
@@ -59,7 +62,7 @@
   }
   function widthAt(b, s) {
     s = s < 0 ? 0 : s > 1 ? 1 : s;
-    return b.w0 + (b.w1 - b.w0) * Math.pow(s, 0.85);
+    return b.w0 + (b.w1 - b.w0) * Math.pow(s, CONFIG.taperCurve);
   }
   function sampleAt(b, f) {
     var tg = b.total * f;
@@ -129,7 +132,7 @@
     var sEl = document.querySelector("[data-root-start]");
     var eEl = document.querySelector("[data-root-end]");
     if (!sEl || !eEl) return;
-    startY = top(sEl) + 8;
+    startY = top(sEl) + sEl.getBoundingClientRect().height * CONFIG.startAt;
     endY   = bottom(eEl) - 20;
     if (endY - startY < 200) return;
 
@@ -182,13 +185,14 @@
       f = Math.max(0.05, Math.min(0.96, f));
       var at = sampleAt(spine, f);
       var big = rand() > 0.42;
-      var dir = rand() > 0.38 ? 1 : -1;            // both sides, leaning inward
+      var dir = (k % 2 === 0) ? -1 : 1;            // strict alternation, even both sides
       var scale = big ? 1 : 0.58;
       // A left branch needs room in the margin; if there is none, send it right.
-      if (dir === -1 && at.x - 62 * scale < 10) dir = 1;
-      var p1 = [at.x + dir * (20 + rand() * 9) * scale, at.y - (15 + rand() * 7) * scale];
-      var p2 = [p1[0] + dir * (22 + rand() * 9) * scale, p1[1] - (5 + rand() * 7) * scale];
-      var p3 = [p2[0] + dir * (16 + rand() * 9) * scale, p2[1] + (2 + rand() * 5) * scale];
+      if (dir === -1 && at.x - 62 * scale * CONFIG.branchLen < 10) dir = 1;
+      var L = scale * CONFIG.branchLen;
+      var p1 = [at.x + dir * (20 + rand() * 9) * L, at.y - (15 + rand() * 7) * L];
+      var p2 = [p1[0] + dir * (22 + rand() * 9) * L, p1[1] - (5 + rand() * 7) * L];
+      var p3 = [p2[0] + dir * (16 + rand() * 9) * L, p2[1] + (2 + rand() * 5) * L];
       var b = mk([[at.x, at.y], p1, p2, p3], Math.max(2.2, at.w * (big ? 0.52 : 0.36)), 1.1);
       b.at = f;
       b.span = Math.min(0.05, (b.total / span) * 3.2);

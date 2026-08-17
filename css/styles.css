@@ -739,7 +739,7 @@ section { padding: 56px 0; }
   width: 96px;
   height: 96px;
   margin-left: -48px;
-  margin-bottom: -48px;   /* exactly half of it sits over the band */
+  margin-bottom: -34px;   /* a little over a third sits over the band */
   z-index: 2;
   pointer-events: none;
 }
@@ -1119,7 +1119,11 @@ section { padding: 56px 0; }
 /* ---------- CTA trees ---------- */
 /* Same tree and the same sway; these just grow up out of the ground when the
    section scrolls into view. */
-.cta-section { position: relative; overflow: hidden; }
+/* Not clipped: the glow behind the egg reaches above the section edge, and
+   overflow:hidden here cut it off in a straight line the same way the hero
+   used to. The growing trees sit well inside the section, so nothing needed
+   the clip. */
+.cta-section { position: relative; }
 .cta-section > .container { position: relative; z-index: 1; }
 .cta-tree {
   position: absolute;
