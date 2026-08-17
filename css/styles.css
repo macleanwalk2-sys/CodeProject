@@ -493,7 +493,11 @@ section { padding: 56px 0; }
   overflow: hidden;
   border: 3px solid var(--green);
   background: linear-gradient(160deg, var(--green-light), #dcece3);
-  min-height: 300px;
+  /* A definite height, so the photo's height:100% actually resolves. With only
+     a min-height the frame had no definite size, the photo fell back to its own
+     3:2 ratio, and the fallback gradient showed as a strip under it. */
+  aspect-ratio: 4 / 3;
+  min-height: 260px;
   display: flex;
   box-shadow: 14px 14px 0 rgba(31, 122, 77, 0.14);
 }
