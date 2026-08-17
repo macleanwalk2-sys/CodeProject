@@ -193,6 +193,18 @@
       var p1 = [at.x + dir * (20 + rand() * 9) * L, at.y - (15 + rand() * 7) * L];
       var p2 = [p1[0] + dir * (22 + rand() * 9) * L, p1[1] - (5 + rand() * 7) * L];
       var p3 = [p2[0] + dir * (16 + rand() * 9) * L, p2[1] + (2 + rand() * 5) * L];
+      // Never off the left edge, never into the content column. Rather than
+      // clipping, the whole branch is scaled back toward the stem, so it keeps
+      // its shape at whatever length actually fits.
+      var room = dir === -1 ? at.x - 16 : (colLeft - 16) - at.x;
+      if (room < 26) continue;
+      var reach = Math.abs(p3[0] - at.x);
+      if (reach > room) {
+        var sc = room / reach;
+        p1 = [at.x + (p1[0]-at.x)*sc, at.y + (p1[1]-at.y)*sc];
+        p2 = [at.x + (p2[0]-at.x)*sc, at.y + (p2[1]-at.y)*sc];
+        p3 = [at.x + (p3[0]-at.x)*sc, at.y + (p3[1]-at.y)*sc];
+      }
       var b = mk([[at.x, at.y], p1, p2, p3], Math.max(2.2, at.w * (big ? 0.52 : 0.36)), 1.1);
       b.at = f;
       b.span = Math.min(0.05, (b.total / span) * 3.2);
