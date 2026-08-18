@@ -898,29 +898,55 @@ section { padding: 56px 0; }
   clip-path: polygon(32% 0, 68% 0, 100% 100%, 0 100%);
 }
 
-/* The canopy is close to a circle now, so the section has to be tall enough to
-   hold one. The copy sits across the middle of it, where the canopy is widest,
-   and the deep bottom padding is what leaves a length of trunk standing between
-   the leaves and the hill. */
-.custom-services { padding: 260px 0 390px; }
+/* Tall enough to hold the canopy with the copy across its middle, where it is
+   widest, and to leave a length of trunk standing between the leaves and the
+   hill. */
+.custom-services { padding: 170px 0 235px; }
+
+/* Type inside the canopy. This copy sits on green rather than white, so the
+   muted grey the rest of the site uses for body text goes dingy on it; these
+   are the tones the CTA band already uses on grass. The heading runs bigger and
+   tighter than a normal section head because it has a lot of open leaf around
+   it, and both lines are balanced so the wrap follows the round shape instead
+   of leaving one orphan word. */
+/* A narrow measure on purpose: a wide block of centred text fights a round
+   shape, and at 640px the second line broke in the middle of "trying to do". */
+.custom-services .section-head { max-width: 450px; margin-bottom: 0; }
+.custom-services .section-head h2 {
+  font-size: 2.35rem;
+  line-height: 1.12;
+  letter-spacing: -1px;
+  text-wrap: balance;
+}
+.custom-services .section-head p {
+  margin-top: 14px;
+  color: #3f4d46;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
 
 /* Services either side of the trunk. The middle track is empty on purpose:
    it is the lane the trunk runs down. */
 .grove-cols {
   display: grid;
-  grid-template-columns: 1fr 150px 1fr;
+  /* The middle track is the lane the trunk runs down. Kept tight: any wider and
+     the two columns stop reading as one list. */
+  grid-template-columns: 1fr 110px 1fr;
   gap: 16px 20px;
   /* Narrower than the canopy is wide, so no list item ever pokes out past the
      leaves. */
-  max-width: 840px;
+  max-width: 780px;
   margin: 46px auto 0;
   align-items: start;
 }
-.grove-col { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.grove-col { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
 .grove-col.left { text-align: right; }
 .grove-col li {
   position: relative;
-  font-size: 1rem;
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.4;
   color: var(--ink);
   padding: 0 4px;
 }
@@ -941,10 +967,10 @@ section { padding: 56px 0; }
 /* The canopy shrinks with the viewport, so the room the copy needs inside it
    shrinks too. */
 @media (max-width: 1080px) {
-  .custom-services { padding: 220px 0 360px; }
+  .custom-services { padding: 145px 0 195px; }
 }
 @media (max-width: 900px) {
-  .custom-services { padding: 175px 0 265px; }
+  .custom-services { padding: 115px 0 175px; }
 }
 
 @media (max-width: 820px) {
