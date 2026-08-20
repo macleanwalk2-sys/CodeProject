@@ -290,6 +290,11 @@ section { padding: 56px 0; }
   /* Holds the stamp, which hangs off the left edge and is clipped by it. */
   position: relative;
   overflow: hidden;
+  /* Bows the top and bottom out from the centre. The horizontal radius is half
+     the width so the two corner curves meet exactly at the middle, leaving one
+     continuous arc rather than a curve at each end with a flat run between
+     them. The vertical radius is what controls how far it bows. */
+  border-radius: 50% / 34px;
 }
 .promo-section > .container { position: relative; z-index: 1; }
 /* The mark pressed into the left edge of the band, most of it off the page.
