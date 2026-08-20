@@ -908,6 +908,17 @@ section { padding: 56px 0; }
   transform-origin: 50% 50%;
   animation: pitchLong 4.4s linear 0.6s both;
 }
+/* Held on the first frame until the column is actually on screen, the same way
+   the portfolio perch is. The flight is keyed to page load, so without this it
+   is over before anyone scrolls down and the bird is simply there, already
+   perched, instead of arriving. .founder-copy carries .reveal, so it picks up
+   .visible from the same observer that fades the column in. */
+.cardinal-flight-long,
+.cardinal-flight-long .cardinal,
+.cardinal-flight-long .bird { animation-play-state: paused; }
+.founder-copy.visible .cardinal-flight-long,
+.founder-copy.visible .cardinal-flight-long .cardinal,
+.founder-copy.visible .cardinal-flight-long .bird { animation-play-state: running; }
 @keyframes flyAcrossLong {
   0%   { transform: translateX(calc(-640px - 26vw)); animation-timing-function: cubic-bezier(0.225, 0.488, 0.42, 1); }
   80%  { transform: translateX(0); }
