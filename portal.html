@@ -14,7 +14,7 @@
   <!-- styles.css supplies the brand variables, header, footer, buttons, and form
        fields. portal.css adds only what is new here, so the marketing pages are
        untouched and neither side loads the other's CSS. -->
-  <link rel="stylesheet" href="css/styles.css?v=76">
+  <link rel="stylesheet" href="css/styles.css?v=77">
   <link rel="stylesheet" href="css/portal.css?v=1">
 </head>
 <body>
@@ -285,6 +285,7 @@
             </select>
           </div>
           <p class="hint">You'll get an email as soon as we pick this up.</p>
+          <p class="form-status form-error" id="reqNotSaved" hidden>This form isn't connected yet, so nothing was saved.</p>
         </div>
         <div class="modal-foot">
           <button type="button" class="btn btn-outline" id="modalCancel">Cancel</button>
@@ -342,8 +343,11 @@
       var form   = document.getElementById('newRequestForm');
       var lastFocused = null;
 
+      var notSaved = document.getElementById('reqNotSaved');
+
       function openModal() {
         lastFocused = document.activeElement;
+        notSaved.hidden = true;
         modal.hidden = false;
         document.getElementById('reqTitle').focus();
       }
@@ -366,11 +370,11 @@
         if (e.key === 'Escape' && !modal.hidden) closeModal();
       });
 
-      // Nothing to save yet. Say so plainly rather than pretending it worked.
+      // Nothing to save yet. Say so in the panel rather than closing it as if it
+      // worked, and without an alert box the brand has no control over.
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        alert('Mockup: this form is not connected yet, so nothing was saved.');
-        closeModal();
+        notSaved.hidden = false;
       });
     })();
   </script>

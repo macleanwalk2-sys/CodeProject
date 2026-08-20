@@ -812,6 +812,12 @@ section { padding: 56px 0; }
    stall then straight down, just a longer run-in and more time to cover it.
    The hero's timings are untouched. */
 .founder-label { position: relative; display: inline-block; }
+/* The bird flies in from the left, so it crosses the portrait in the other
+   column on its way to the label. The portrait is position:relative and this
+   column was static, and a positioned element paints over a non-positioned one
+   whatever the DOM order, so the photo's frame sliced the cardinal in half
+   mid-flight. Lifting the whole column puts the flight path in front. */
+.founder-copy { position: relative; z-index: 2; }
 .cardinal-flight-long {
   position: absolute;
   right: 16px;
