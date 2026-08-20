@@ -287,6 +287,24 @@ section { padding: 56px 0; }
 .promo-section {
   background: linear-gradient(135deg, #1f7a4d 0%, #17643e 100%);
   color: #fff;
+  /* Holds the stamp, which hangs off the left edge and is clipped by it. */
+  position: relative;
+  overflow: hidden;
+}
+.promo-section > .container { position: relative; z-index: 1; }
+/* The mark pressed into the left edge of the band, most of it off the page.
+   Kept faint so it reads as a watermark behind the heading rather than
+   competing with it, the same way the page-header leaf clusters do. */
+.promo-stamp {
+  position: absolute;
+  left: -104px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 340px;
+  height: auto;
+  opacity: 0.11;
+  pointer-events: none;
+  z-index: 0;
 }
 .promo-grid {
   display: grid;
@@ -1247,6 +1265,9 @@ section { padding: 56px 0; }
 
   .hero-grid { grid-template-columns: 1fr; }
   .promo-grid { grid-template-columns: 1fr; gap: 32px; }
+  /* One column here, so the copy runs the full width and the stamp would sit
+     under the text rather than beside it. */
+  .promo-stamp { display: none; }
   .cards { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; gap: 28px; }
   .contact-grid { grid-template-columns: 1fr; }
