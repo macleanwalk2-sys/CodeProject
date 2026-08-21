@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requests | Oakwood Marketing Client Portal</title>
+  <meta name="description" content="Client portal for Oakwood Marketing Services: submit website change requests and track their progress.">
+  <!-- A signed-in area has nothing to offer search engines. -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- styles.css supplies the brand variables, header, footer, buttons, and form
+       fields. portal.css adds only what is new here, so the marketing pages are
+       untouched and neither side loads the other's CSS. -->
+  <link rel="stylesheet" href="css/styles.css?v=82">
+  <link rel="stylesheet" href="css/portal.css?v=1">
+</head>
+<body>
+
+  <!-- Header: the marketing bar without the sales links. Someone signed in has
+       already bought, so "Get a Quote" would be noise. -->
+  <header class="site-header">
+    <div class="container portal-bar nav">
+      <a href="index.html" class="brand">
+        <img src="assets/logo.svg" alt="Oakwood Marketing logo" class="logo-mark">
+        Oakwood Marketing
+      </a>
+      <div class="portal-account">
+        <div class="who">
+          <strong>Triangle Gutter Co.</strong>
+          <span>sarah@trianglegutter.com</span>
+        </div>
+        <span class="avatar" aria-hidden="true">TG</span>
+        <a href="index.html" class="signout">Sign out</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="portal">
+
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <nav aria-label="Portal">
+        <ul class="portal-nav">
+          <li>
+            <a href="#">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="portal.html" class="active" aria-current="page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v15L12 16l-8.5 4V5A1.5 1.5 0 0 1 5 3.5Z"/></svg>
+              Requests
+              <span class="count">4</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.2 2.8 2.8L16 9.8"/></svg>
+              Completed
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V16"/><path d="M9.3 19.5V11"/><path d="M14.7 19.5v-6"/><path d="M20 19.5V5.5"/></svg>
+              Website Stats
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5A1.5 1.5 0 0 1 5 6h4l2 2.5h8a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19.5H5A1.5 1.5 0 0 1 3.5 18Z"/></svg>
+              Files
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+              Account
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-help">
+        <strong>Need something urgent?</strong>
+        Call us at (919) 555-0000 or email
+        <a href="mailto:hello@oakwoodmarketing.com">hello@oakwoodmarketing.com</a>.
+      </div>
+    </aside>
+
+    <!-- Request log -->
+    <main class="portal-main">
+
+      <div class="portal-head">
+        <div>
+          <h1>Requests</h1>
+          <p>Every change you've asked for, and where it stands.</p>
+        </div>
+        <button type="button" class="btn btn-primary" id="newRequestBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          New request
+        </button>
+      </div>
+
+      <!-- Remove this once the portal reads real requests from the database. -->
+      <div class="portal-demo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg>
+        <p><strong>Mockup.</strong> The requests below are sample data and the form doesn't save yet. Layout and wording only, so it's cheap to change.</p>
+      </div>
+
+      <div class="portal-filters">
+        <button type="button" class="filter-tab" data-filter="all" aria-pressed="true">All <span class="n">7</span></button>
+        <button type="button" class="filter-tab" data-filter="open" aria-pressed="false">Open <span class="n">4</span></button>
+        <button type="button" class="filter-tab" data-filter="waiting" aria-pressed="false">Needs you <span class="n">1</span></button>
+        <button type="button" class="filter-tab" data-filter="done" aria-pressed="false">Completed <span class="n">3</span></button>
+        <div class="portal-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg>
+          <label class="visually-hidden" for="reqSearch">Search requests</label>
+          <input type="search" id="reqSearch" placeholder="Search requests">
+        </div>
+      </div>
+
+      <ul class="req-list" id="reqList">
+
+        <li class="req-row" data-status="waiting">
+          <div class="req-main">
+            <h2 class="req-title"><span class="ref">#1047</span>Add fall promo banner to the homepage</h2>
+            <div class="req-meta">
+              <span class="type-tag">Design</span>
+              <span class="dot">·</span>
+              <span>Submitted Aug 14</span>
+              <span class="dot">·</span>
+              <span>Updated Aug 18</span>
+            </div>
+          </div>
+          <span class="status status-waiting">Needs you</span>
+          <p class="req-note">Waiting on you: send the banner image, or we can design one for you.</p>
+        </li>
+
+        <li class="req-row" data-status="progress">
+          <div class="req-main">
+            <h2 class="req-title"><span class="ref">#1046</span>New service page for gutter cleaning</h2>
+            <div class="req-meta">
+              <span class="type-tag">New page</span>
+              <span class="dot">·</span>
+              <span>Submitted Aug 12</span>
+              <span class="dot">·</span>
+              <span>Updated Aug 18</span>
+            </div>
+          </div>
+          <span class="status status-progress">In progress</span>
+          <p class="req-note">Draft is written, building the page now. Expect a preview link by Aug 21.</p>
+        </li>
+
+        <li class="req-row" data-status="progress">
+          <div class="req-main">
+            <h2 class="req-title"><span class="ref">#1045</span>Update business hours for Labor Day weekend</h2>
+            <div class="req-meta">
+              <span class="type-tag">Content edit</span>
+              <span class="dot">·</span>
+              <span>Submitted Aug 15</span>
+              <span class="dot">·</span>
+              <span>Updated Aug 17</span>
+            </div>
+          </div>
+          <span class="status status-progress">In progress</span>
+          <p class="req-note">Scheduled to go live Aug 29 and revert Sep 2.</p>
+        </li>
+
+        <li class="req-row" data-status="new">
+          <div class="req-main">
+            <h2 class="req-title"><span class="ref">#1044</span>Add the business to Google Business Profile and Yelp</h2>
+            <div class="req-meta">
+              <span class="type-tag">Listings</span>
+              <span class="dot">·</span>
+              <span>Submitted Aug 18</span>
+              <span class="dot">·</span>
+              <span>Updated Aug 18</span>
+            </div>
+          </div>
+          <span class="status status-new">New</span>
+          <p class="req-note">Received. We'll confirm a start date within one business day.</p>
+        </li>
+
+        <li class="req-row" data-status="done">
+          <div class="req-main">
+            <h2 class="req-title"><span class="ref">#1043</span>Contact form isn't sending messages</h2>
+            <div class="req-meta">
+              <span class="type-tag">Something's broken</span>
+              <span class="dot">·</span>
+              <span>Submitted Aug 8</span>
+              <span class="dot">·</span>
+              <span>Completed Aug 11</span>
+            </div>
+          </div>
+          <span class="status status-done">Completed</span>
+          <p class="req-note">Fixed and tested. Submissions now reach sarah@trianglegutter.com.</p>
+        </li>
+
+        <li class="req-row" data-status="done">
+          <div class="req-main">
+            <h2 class="req-title"><span class="ref">#1042</span>Swap the team photo on the About page</h2>
+            <div class="req-meta">
+              <span class="type-tag">Content edit</span>
+              <span class="dot">·</span>
+              <span>Submitted Aug 5</span>
+              <span class="dot">·</span>
+              <span>Completed Aug 7</span>
+            </div>
+          </div>
+          <span class="status status-done">Completed</span>
+          <p class="req-note">New photo is live and resized for mobile.</p>
+        </li>
+
+        <li class="req-row" data-status="done">
+          <div class="req-main">
+            <h2 class="req-title"><span class="ref">#1041</span>Monthly SEO report — July</h2>
+            <div class="req-meta">
+              <span class="type-tag">SEO</span>
+              <span class="dot">·</span>
+              <span>Submitted Aug 1</span>
+              <span class="dot">·</span>
+              <span>Completed Aug 4</span>
+            </div>
+          </div>
+          <span class="status status-done">Completed</span>
+          <p class="req-note">Report is in Files. Calls from search were up 18% over June.</p>
+        </li>
+
+      </ul>
+
+      <!-- Shown by the filter script when nothing matches. -->
+      <div class="req-empty" id="reqEmpty" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v15L12 16l-8.5 4V5A1.5 1.5 0 0 1 5 3.5Z"/></svg>
+        <p>No requests match that.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- New request dialog -->
+  <div class="modal-backdrop" id="newRequestModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="newRequestTitle">
+      <div class="modal-head">
+        <h2 id="newRequestTitle">New request</h2>
+        <button type="button" class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+      </div>
+      <form id="newRequestForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="reqTitle">What do you need?</label>
+            <input type="text" id="reqTitle" name="title" placeholder="Add a new page for gutter guards" required>
+          </div>
+          <div class="form-group">
+            <label for="reqType">Type</label>
+            <select id="reqType" name="type">
+              <option>Content edit</option>
+              <option>New page</option>
+              <option>Design</option>
+              <option>SEO</option>
+              <option>Listings</option>
+              <option>Something's broken</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="reqPage">Which page? <span class="optional">(optional)</span></label>
+            <input type="url" id="reqPage" name="page" placeholder="https://trianglegutter.com/services">
+          </div>
+          <div class="form-group">
+            <label for="reqDetails">Details</label>
+            <textarea id="reqDetails" name="details" rows="4" placeholder="The more specific, the faster it gets done." required></textarea>
+          </div>
+          <!-- A date is more honest than a priority dropdown, where everything
+               becomes "urgent" by the third request. -->
+          <div class="form-group">
+            <label for="reqWhen">When do you need it?</label>
+            <select id="reqWhen" name="when">
+              <option>No rush</option>
+              <option>Within a week</option>
+              <option>As soon as possible</option>
+            </select>
+          </div>
+          <p class="hint">You'll get an email as soon as we pick this up.</p>
+          <p class="form-status form-error" id="reqNotSaved" hidden>This form isn't connected yet, so nothing was saved.</p>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-outline" id="modalCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      /* ---- Filter and search ---- */
+      var rows   = Array.prototype.slice.call(document.querySelectorAll('.req-row'));
+      var tabs   = Array.prototype.slice.call(document.querySelectorAll('.filter-tab'));
+      var search = document.getElementById('reqSearch');
+      var empty  = document.getElementById('reqEmpty');
+      var filter = 'all';
+
+      // "Open" is everything still on our plate, whoever it is waiting on.
+      function inFilter(status) {
+        if (filter === 'all')  return true;
+        if (filter === 'open') return status !== 'done';
+        return status === filter;
+      }
+
+      function apply() {
+        var term = search.value.trim().toLowerCase();
+        var shown = 0;
+
+        rows.forEach(function (row) {
+          var match = inFilter(row.getAttribute('data-status')) &&
+                      (!term || row.textContent.toLowerCase().indexOf(term) !== -1);
+          row.hidden = !match;
+          if (match) shown++;
+        });
+
+        empty.hidden = shown > 0;
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          filter = tab.getAttribute('data-filter');
+          tabs.forEach(function (t) {
+            t.setAttribute('aria-pressed', String(t === tab));
+          });
+          apply();
+        });
+      });
+
+      search.addEventListener('input', apply);
+
+      /* ---- New request dialog ---- */
+      var modal  = document.getElementById('newRequestModal');
+      var openBtn = document.getElementById('newRequestBtn');
+      var form   = document.getElementById('newRequestForm');
+      var lastFocused = null;
+
+      var notSaved = document.getElementById('reqNotSaved');
+
+      function openModal() {
+        lastFocused = document.activeElement;
+        notSaved.hidden = true;
+        modal.hidden = false;
+        document.getElementById('reqTitle').focus();
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        if (lastFocused) lastFocused.focus();
+      }
+
+      openBtn.addEventListener('click', openModal);
+      document.getElementById('modalClose').addEventListener('click', closeModal);
+      document.getElementById('modalCancel').addEventListener('click', closeModal);
+
+      // Clicking the dimmed area outside the panel closes it.
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+
+      // Nothing to save yet. Say so in the panel rather than closing it as if it
+      // worked, and without an alert box the brand has no control over.
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        notSaved.hidden = false;
+      });
+    })();
+  </script>
+
+</body>
+</html>

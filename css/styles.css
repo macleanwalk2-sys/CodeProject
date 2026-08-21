@@ -280,6 +280,104 @@ section { padding: 56px 0; }
 .card h3 { margin: 0 0 8px; font-size: 1.2rem; }
 .card p { margin: 0; color: var(--muted); font-size: 0.98rem; }
 
+/* ---------- Dashboard promo ---------- */
+/* A full-bleed green band. The CTA further down is a green card floating on a
+   soft background, so these two read as different objects rather than one long
+   stretch of green. */
+.promo-section {
+  background: linear-gradient(135deg, #1f7a4d 0%, #17643e 100%);
+  color: #fff;
+  /* Holds the stamp, which hangs off the left edge and is clipped by it. */
+  position: relative;
+  overflow: hidden;
+  /* Bows the top and bottom out from the centre. Deliberately not border-radius:
+     corner ellipses always turn vertical where they meet the side, so the bend
+     is flat across the middle and then hooks down hard at both ends. Clipping
+     to one ellipse wider than the section instead means only its gentle middle
+     stretch is ever on screen, so the curve carries at the same rate the whole
+     way across. The width multiplier sets how even it reads (higher is flatter
+     and more constant); the height stays at 50% so the band keeps its full
+     height at the centre. */
+  clip-path: ellipse(115% 50% at 50% 50%);
+}
+.promo-section > .container { position: relative; z-index: 1; }
+/* The mark pressed into the left edge of the band, most of it off the page.
+   Kept faint so it reads as a watermark behind the heading rather than
+   competing with it, the same way the page-header leaf clusters do. */
+.promo-stamp {
+  position: absolute;
+  left: -104px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 340px;
+  height: auto;
+  opacity: 0.11;
+  pointer-events: none;
+  z-index: 0;
+}
+.promo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 48px;
+  align-items: center;
+}
+.promo-copy h2 {
+  margin: 0 0 14px;
+  font-size: 2rem;
+  letter-spacing: -0.6px;
+  text-wrap: balance;
+}
+.promo-copy p {
+  margin: 0 0 26px;
+  color: #d7e9de;
+  font-size: 1.05rem;
+}
+/* Same white-on-green button the CTA band uses, so the two greens agree. */
+.promo-copy .btn-primary { background: #fff; color: var(--green); }
+.promo-copy .btn-primary:hover { background: var(--green-light); color: var(--green-dark); }
+
+/* Holds its 16:9 shape whether it contains the placeholder or a real embed, so
+   dropping the video in never shifts the section's height. */
+.promo-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 38px rgba(9, 46, 29, 0.28);
+}
+.promo-video > iframe,
+.promo-video > video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+/* Comes out with the placeholder once a real embed goes in. */
+.promo-video-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 14px;
+  color: #d7e9de;
+  font-size: 0.9rem;
+}
+.promo-video-empty .play {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.promo-video-empty .play svg { width: 22px; height: 22px; margin-left: 3px; }
+
 /* ---------- CTA band ---------- */
 .cta-band {
   background: linear-gradient(135deg, #238755 0%, #16603c 100%);
@@ -812,6 +910,12 @@ section { padding: 56px 0; }
    stall then straight down, just a longer run-in and more time to cover it.
    The hero's timings are untouched. */
 .founder-label { position: relative; display: inline-block; }
+/* The bird flies in from the left, so it crosses the portrait in the other
+   column on its way to the label. The portrait is position:relative and this
+   column was static, and a positioned element paints over a non-positioned one
+   whatever the DOM order, so the photo's frame sliced the cardinal in half
+   mid-flight. Lifting the whole column puts the flight path in front. */
+.founder-copy { position: relative; z-index: 2; }
 .cardinal-flight-long {
   position: absolute;
   right: 16px;
@@ -831,6 +935,17 @@ section { padding: 56px 0; }
   transform-origin: 50% 50%;
   animation: pitchLong 4.4s linear 0.6s both;
 }
+/* Held on the first frame until the column is actually on screen, the same way
+   the portfolio perch is. The flight is keyed to page load, so without this it
+   is over before anyone scrolls down and the bird is simply there, already
+   perched, instead of arriving. .founder-copy carries .reveal, so it picks up
+   .visible from the same observer that fades the column in. */
+.cardinal-flight-long,
+.cardinal-flight-long .cardinal,
+.cardinal-flight-long .bird { animation-play-state: paused; }
+.founder-copy.visible .cardinal-flight-long,
+.founder-copy.visible .cardinal-flight-long .cardinal,
+.founder-copy.visible .cardinal-flight-long .bird { animation-play-state: running; }
 @keyframes flyAcrossLong {
   0%   { transform: translateX(calc(-640px - 26vw)); animation-timing-function: cubic-bezier(0.225, 0.488, 0.42, 1); }
   80%  { transform: translateX(0); }
@@ -1158,6 +1273,10 @@ section { padding: 56px 0; }
   .nav-toggle { display: inline-block; }
 
   .hero-grid { grid-template-columns: 1fr; }
+  .promo-grid { grid-template-columns: 1fr; gap: 32px; }
+  /* One column here, so the copy runs the full width and the stamp would sit
+     under the text rather than beside it. */
+  .promo-stamp { display: none; }
   .cards { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; gap: 28px; }
   .contact-grid { grid-template-columns: 1fr; }
