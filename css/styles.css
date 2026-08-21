@@ -330,6 +330,9 @@ section { padding: 56px 0; }
   align-items: start;
 }
 .price-cards.two   { grid-template-columns: repeat(2, 1fr); max-width: 780px; margin-inline: auto; margin-bottom: 54px; }
+/* Both build cards carry a badge that hangs over the top edge, so the row needs
+   room for it. */
+.price-cards.two .price-card { margin-top: 12px; }
 .price-cards.three { grid-template-columns: repeat(3, 1fr); }
 
 .price-card {
@@ -372,6 +375,27 @@ section { padding: 56px 0; }
 }
 .price .from { margin-right: 7px; }
 .price .to { margin: 0 6px; }
+
+/* The struck list price sitting beside the offer. Deliberately smaller and in
+   the body face, so the number people actually pay stays the loud one. <s>
+   rather than a styled span, so it is announced as no longer current instead of
+   read out as a second price. */
+.price-was {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration-thickness: 2px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+/* Sits under the price, so the offer has a reason and an end rather than just
+   being a lower number. */
+.price-note {
+  margin: -12px 0 20px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
 
 .price-list {
   list-style: none;
