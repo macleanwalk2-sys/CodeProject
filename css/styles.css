@@ -1521,11 +1521,12 @@ section { padding: 56px 0; }
    overflow:hidden here cut it off in a straight line the same way the hero
    used to. The growing trees sit well inside the section, so nothing needed
    the clip. */
-/* The egg hangs 62px above the band and its glow reaches roughly 80px past
-   that again, so the section needs headroom for all of it. Without this the
-   glow crossed the top edge and sat on the dashboard band above, which bows
-   down at its centre exactly where the egg is. */
-.cta-section { position: relative; padding-top: 152px; }
+/* Headroom for the egg, which hangs 62px above the band, plus its glow, which
+   reaches 56px past that again (inset -58% of a 96px box). 118px is the exact
+   floor; below it the glow starts touching the section above, which is a
+   dashboard band clipped to an ellipse, so it bows down at its centre exactly
+   where the egg is. */
+.cta-section { position: relative; padding-top: 120px; }
 .cta-section > .container { position: relative; z-index: 1; }
 .cta-tree {
   position: absolute;
