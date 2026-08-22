@@ -60,39 +60,64 @@ cached copy. Keeping the number the same across pages means navigating between
 them does not re-download the stylesheet.
 
 ## Client portal
-`portal.html` is the signed-in area where a client tracks the changes they've
-asked for. Right now it is **a mockup**: the requests are sample data written
-into the HTML and the new-request form does not save anything. It is here to
-settle layout and wording before any of it is wired up.
+Three pages behind a login, live and working:
 
-It borrows the header, footer, buttons, form fields, and colour variables from
-`styles.css`, and adds only portal-specific layout in `css/portal.css`. So the
-four marketing pages are untouched, and neither side downloads the other's CSS.
+- `login.html` — sign in, and "Forgot your password?"
+- `set-password.html` — where invite and password-reset links land
+- `portal.html` — the request log
+
+Requests are read from and written to a `requests` table in Supabase. Sign-in is
+email and password, handled by Supabase Auth.
+
+**Accounts are invite only.** Self-registration is turned off on the Supabase
+project, so the only way an account exists is if we create it, from
+**Authentication → Users** in the Supabase dashboard: **Invite user** emails a
+link where they set their own password, or **Create new user** sets one
+directly (tick Auto Confirm, or they wait on an email that never comes).
+
+### How it is put together
+The portal pages borrow the header, buttons, form fields, and colour variables
+from `styles.css`, and add only portal layout in `css/portal.css`, so the four
+marketing pages are untouched and neither side downloads the other's CSS.
 `portal.css` carries its own `?v=` number, independent of the one on
 `styles.css`.
 
-Statuses are **New**, **In progress**, **Needs you**, and **Completed**. "Needs
-you" is the one that matters: it marks work stalled waiting on the client for a
-photo, some copy, or an approval, and it is the reason a request can sit for a
-week. Those rows get an amber edge so a client can see at a glance whether
-anything is on them.
+`js/supabase-config.js` holds the project URL and the publishable key.
+`js/portal-auth.js` builds the shared client the three pages use.
 
-To make it real, three things are needed, roughly in this order:
-1. **A login**, so the page knows which client it is showing. Supabase Auth is
-   the plan: it runs from client-side JS, so it works on GitHub Pages with no
-   server. Sign-in is email and password.
-2. **A `requests` table** in Supabase, with a row-level security policy so each
-   client can only ever read and write their own rows. That policy, not the
-   page, is what actually keeps clients apart: a static file cannot hide
-   anything.
-3. **Swapping the sample rows** for a query against that table, and pointing the
-   form at an insert.
+Both values in the config file are **meant** to be public and are readable in
+the page source. The **secret key** is the opposite and must never appear in
+this repository.
 
+### What actually keeps clients apart
+Row level security on the `requests` table, not the login screen. These are
+static files; anyone can fetch `portal.html` and read it. The redirect to
+`login.html` is a courtesy for people who are not signed in. The policies are
+what make the query return nothing without a valid session.
+
+The table allows a signed-in client to **read** and **insert** their own rows,
+and nothing else. There is deliberately no update or delete policy, so a client
+cannot move their own request to Completed — we do that from the dashboard.
+`user_id` defaults to `auth.uid()`, so the database stamps each row with
+whoever is signed in and nobody can file a request in another client's name.
+
+### Statuses
+**New**, **In progress**, **Needs you**, **Completed**, matching a check
+constraint on the column. "Needs you" is the one that matters: it marks work
+stalled waiting on the client for a photo, some copy, or an approval, and it is
+the reason a request can sit for a week. Those rows get an amber edge so a
+client can see at a glance whether anything is on them.
+
+### Not built yet
 The other sidebar links (Dashboard, Completed, Website Stats, Files, Account)
 are placeholders. Website Stats is the one that needs more than Supabase: it
 would read Google Analytics, and the credential for that cannot sit in
-browser-visible JS, so it needs a small serverless function to fetch the numbers
-server-side.
+browser-visible JS, so it needs a small serverless function to fetch the
+numbers server-side.
+
+Supabase's built-in email sender is rate limited to a handful of messages an
+hour and is not meant for production. Before real client invites go out, point
+it at proper SMTP under **Project Settings → Authentication → SMTP Settings**.
 
 ## Still to do
 - **Contact form** needs an endpoint. Create a free form at
