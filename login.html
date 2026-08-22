@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Sign In | Oakwood Marketing</title>
+  <meta name="description" content="Sign in to the Oakwood Marketing client portal.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=85">
+  <link rel="stylesheet" href="css/portal.css?v=3">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container portal-bar nav">
+      <a href="index.html" class="brand">
+        <img src="assets/logo.svg" alt="Oakwood Marketing logo" class="logo-mark">
+        Oakwood Marketing
+      </a>
+      <a href="index.html" class="signout">Back to site</a>
+    </div>
+  </header>
+
+  <div class="auth-screen">
+    <div class="auth-card">
+      <h1>Client sign in</h1>
+      <p class="sub">Accounts are set up by us. If you need access, email
+        <a href="mailto:hello@oakwoodmarketing.com">hello@oakwoodmarketing.com</a>.</p>
+
+      <form id="signInForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="signInBtn">Sign in</button>
+      </form>
+
+      <p class="auth-links">
+        <button type="button" id="forgotBtn">Forgot your password?</button>
+      </p>
+      <p class="auth-msg" id="msg" hidden></p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase, currentSession, PAGES, absolute } from './js/portal-auth.js';
+
+    const $ = (id) => document.getElementById(id);
+    const msg = $('msg');
+    function say(text, ok) {
+      msg.textContent = text;
+      msg.className = 'auth-msg ' + (ok ? 'ok' : 'bad');
+      msg.hidden = false;
+    }
+
+    // Already signed in? Skip the form rather than making someone type it again.
+    if (await currentSession()) location.replace(PAGES.portal);
+
+    $('signInForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      $('signInBtn').disabled = true;
+      const { error } = await supabase.auth.signInWithPassword({
+        email: $('email').value.trim(),
+        password: $('password').value
+      });
+      $('signInBtn').disabled = false;
+      if (error) {
+        say('That email and password did not match. Try again.', false);
+        return;
+      }
+      location.href = PAGES.portal;
+    });
+
+    $('forgotBtn').addEventListener('click', async () => {
+      const email = $('email').value.trim();
+      if (!email) {
+        say('Enter your email above first, then click this again.', false);
+        return;
+      }
+      // The reset link has to land on the page that can actually take a new
+      // password, not back here.
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: absolute(PAGES.setPassword)
+      });
+      say(error ? error.message : 'Check your email for a link to set a new password.', !error);
+    });
+  </script>
+
+</body>
+</html>

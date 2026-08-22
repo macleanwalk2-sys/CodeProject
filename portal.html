@@ -15,7 +15,7 @@
        fields. portal.css adds only what is new here, so the marketing pages are
        untouched and neither side loads the other's CSS. -->
   <link rel="stylesheet" href="css/styles.css?v=85">
-  <link rel="stylesheet" href="css/portal.css?v=2">
+  <link rel="stylesheet" href="css/portal.css?v=3">
 </head>
 <body>
 
@@ -42,49 +42,7 @@
        up in front of someone who is already signed in. -->
   <div class="portal-booting" id="booting">Loading…</div>
 
-  <!-- Sign in -->
-  <div class="auth-screen" id="signInScreen" hidden>
-    <div class="auth-card">
-      <h1>Client sign in</h1>
-      <p class="sub">Accounts are set up by us. If you need access, email
-        <a href="mailto:hello@oakwoodmarketing.com">hello@oakwoodmarketing.com</a>.</p>
-      <form id="signInForm">
-        <div class="form-group">
-          <label for="signInEmail">Email</label>
-          <input type="email" id="signInEmail" autocomplete="username" required>
-        </div>
-        <div class="form-group">
-          <label for="signInPassword">Password</label>
-          <input type="password" id="signInPassword" autocomplete="current-password" required>
-        </div>
-        <button type="submit" class="btn btn-primary" id="signInBtn">Sign in</button>
-      </form>
-      <p class="auth-links">
-        <button type="button" id="forgotBtn">Forgot your password?</button>
-      </p>
-      <p class="auth-msg" id="signInMsg" hidden></p>
-    </div>
-  </div>
 
-  <!-- Where invite and password-reset links land -->
-  <div class="auth-screen" id="setPasswordScreen" hidden>
-    <div class="auth-card">
-      <h1 id="setPasswordTitle">Set your password</h1>
-      <p class="sub">Pick something you don't use anywhere else. At least 8 characters.</p>
-      <form id="setPasswordForm">
-        <div class="form-group">
-          <label for="newPassword">New password</label>
-          <input type="password" id="newPassword" autocomplete="new-password" minlength="8" required>
-        </div>
-        <div class="form-group">
-          <label for="newPassword2">Confirm password</label>
-          <input type="password" id="newPassword2" autocomplete="new-password" minlength="8" required>
-        </div>
-        <button type="submit" class="btn btn-primary" id="setPasswordBtn">Save password</button>
-      </form>
-      <p class="auth-msg" id="setPasswordMsg" hidden></p>
-    </div>
-  </div>
 
   <!-- The portal proper -->
   <div class="portal" id="portalApp" hidden>
@@ -231,37 +189,35 @@
   </div>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-    import { SUPABASE_URL, SUPABASE_KEY } from './js/supabase-config.js';
+    import { supabase, currentSession, PAGES } from './js/portal-auth.js';
 
     const $ = (id) => document.getElementById(id);
 
-    /* ---------- Screens ---------- */
-    const screens = {
-      booting: $('booting'),
-      signIn: $('signInScreen'),
-      setPassword: $('setPasswordScreen'),
-      app: $('portalApp')
-    };
-    function show(name) {
-      Object.entries(screens).forEach(([key, el]) => { el.hidden = key !== name; });
-      $('accountBar').hidden = name !== 'app';
-    }
-    function say(el, text, ok) {
-      el.textContent = text;
-      el.className = 'auth-msg ' + (ok ? 'ok' : 'bad');
-      el.hidden = false;
+    // Nobody reaches the log without a session. This redirect is a courtesy, not
+    // the security boundary: portal.html is a static file anyone can fetch and
+    // read. What actually protects the data is the row level security policy on
+    // the requests table, which returns nothing at all without a valid login.
+    const session = await currentSession();
+    if (!session) {
+      location.replace(PAGES.login);
+      throw new Error('not signed in');
     }
 
-    // Fail loudly rather than throwing something cryptic from deep inside the
-    // library if the config was never filled in.
-    if (SUPABASE_URL.startsWith('PASTE_')) {
-      screens.booting.textContent =
-        'Portal not connected yet: add your Supabase API URL to js/supabase-config.js.';
-      throw new Error('SUPABASE_URL is not set');
-    }
+    /* ---------- Account bar ---------- */
+    const email = session.user.email || '';
+    const name = session.user.user_metadata?.company || email.split('@')[0];
+    $('accountName').textContent = name;
+    $('accountEmail').textContent = email;
+    $('accountAvatar').textContent = (name.slice(0, 2) || '?').toUpperCase();
+    $('accountBar').hidden = false;
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    $('signOutBtn').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      location.replace(PAGES.login);
+    });
+
+    $('booting').hidden = true;
+    $('portalApp').hidden = false;
 
     /* ---------- Status vocabulary ---------- */
     /* Kept in one place so the pill, the filter tabs and the database check
@@ -305,11 +261,10 @@
       tag.className = 'type-tag';
       tag.textContent = r.type;
       meta.append(tag);
-      const dates = [
+      [
         'Submitted ' + fmtDate(r.created_at),
         (r.status === 'done' ? 'Completed ' : 'Updated ') + fmtDate(r.updated_at)
-      ];
-      dates.forEach((text) => {
+      ].forEach((text) => {
         const dot = document.createElement('span');
         dot.className = 'dot';
         dot.textContent = '·';
@@ -346,8 +301,7 @@
           (!term || [r.title, r.type, r.details, r.note].join(' ').toLowerCase().includes(term))
       );
 
-      const list = $('reqList');
-      list.replaceChildren(...shown.map(rowFor));
+      $('reqList').replaceChildren(...shown.map(rowFor));
       $('reqEmpty').hidden = shown.length > 0;
       $('reqEmptyText').textContent = requests.length === 0
         ? 'No requests yet. Use “New request” to send us your first one.'
@@ -380,72 +334,6 @@
       requests = data;
       render();
     }
-
-    function showAccount(user) {
-      const email = user.email || '';
-      const name = user.user_metadata?.company || email.split('@')[0];
-      $('accountName').textContent = name;
-      $('accountEmail').textContent = email;
-      $('accountAvatar').textContent = (name.slice(0, 2) || '?').toUpperCase();
-    }
-
-    /* ---------- Sign in ---------- */
-    $('signInForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = $('signInBtn');
-      btn.disabled = true;
-      const { error } = await supabase.auth.signInWithPassword({
-        email: $('signInEmail').value.trim(),
-        password: $('signInPassword').value
-      });
-      btn.disabled = false;
-      if (error) {
-        say($('signInMsg'), 'That email and password did not match. Try again.', false);
-        return;
-      }
-      await start();
-    });
-
-    $('forgotBtn').addEventListener('click', async () => {
-      const email = $('signInEmail').value.trim();
-      if (!email) {
-        say($('signInMsg'), 'Enter your email above first, then click this again.', false);
-        return;
-      }
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.href.split('#')[0]
-      });
-      say($('signInMsg'),
-        error ? error.message : 'Check your email for a link to set a new password.',
-        !error);
-    });
-
-    $('signOutBtn').addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      window.location.reload();
-    });
-
-    /* ---------- Set password (invite and reset links land here) ---------- */
-    $('setPasswordForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const pw = $('newPassword').value;
-      if (pw !== $('newPassword2').value) {
-        say($('setPasswordMsg'), 'The two passwords do not match.', false);
-        return;
-      }
-      const btn = $('setPasswordBtn');
-      btn.disabled = true;
-      const { error } = await supabase.auth.updateUser({ password: pw });
-      btn.disabled = false;
-      if (error) {
-        say($('setPasswordMsg'), error.message, false);
-        return;
-      }
-      // Drop the token out of the address bar so a refresh or a shared link
-      // cannot land anyone back on this screen.
-      history.replaceState(null, '', window.location.pathname);
-      await start();
-    });
 
     /* ---------- Filters ---------- */
     document.querySelectorAll('.filter-tab').forEach((tab) => {
@@ -483,8 +371,7 @@
 
     $('newRequestForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const btn = $('reqSubmit');
-      btn.disabled = true;
+      $('reqSubmit').disabled = true;
       // user_id is left off on purpose: the column defaults to auth.uid(), so
       // the database stamps the row with whoever is signed in and a client
       // cannot file a request in someone else's name.
@@ -495,7 +382,7 @@
         details: $('reqDetails').value.trim(),
         needed_when: $('reqWhen').value
       });
-      btn.disabled = false;
+      $('reqSubmit').disabled = false;
       if (error) {
         $('reqError').textContent = 'Could not send that: ' + error.message;
         $('reqError').hidden = false;
@@ -506,27 +393,7 @@
       await loadRequests();
     });
 
-    /* ---------- Boot ---------- */
-    async function start() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) { show('signIn'); return; }
-      showAccount(session.user);
-      show('app');
-      await loadRequests();
-    }
-
-    // An invite or reset link arrives with its token in the URL fragment. The
-    // library signs the session in from it, so the check is what kind of link it
-    // was, not whether there is a session: both kinds need a password set before
-    // the portal is any use.
-    const linkType = new URLSearchParams(window.location.hash.slice(1)).get('type');
-    if (linkType === 'invite' || linkType === 'recovery') {
-      $('setPasswordTitle').textContent =
-        linkType === 'invite' ? 'Set your password' : 'Choose a new password';
-      show('setPassword');
-    } else {
-      start();
-    }
+    await loadRequests();
   </script>
 
 </body>
