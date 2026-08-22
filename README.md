@@ -11,7 +11,9 @@ custom marketing services.
 - `services.html` — Services, full pricing (`#pricing`), portfolio
 - `about.html` — Founder section, portfolio
 - `contact.html` — Contact form and details
-- `portal.html` — Client portal, request log (mockup, see below)
+- `login.html` — Client sign in
+- `set-password.html` — Where invite and password-reset links land
+- `portal.html` — Client portal, request log (signed in only)
 
 ## Structure
 ```
@@ -19,18 +21,24 @@ index.html
 services.html
 about.html
 contact.html
+login.html           client sign in
+set-password.html    invite and password-reset landing
 portal.html          client portal: request log
 css/styles.css       all styling for the marketing pages
 css/portal.css       portal only, loaded after styles.css
 js/main.js           scroll reveal
+js/supabase-config.js  project URL and publishable key
+js/portal-auth.js    shared Supabase client for the portal pages
 assets/logo.svg      oak tree logo (header and footer)
+assets/logo-white.svg  the mark in white, for green or dark grounds
 assets/favicon.svg   browser tab icon, white tree on a green tile
 assets/hill.svg      grassy hill behind the middle sections
 assets/raleigh.svg   low poly Raleigh skyline illustration
 ```
 
-No build step and no dependencies. Everything is hand written HTML, CSS, and a
-little vanilla JS.
+No build step. The marketing pages have no dependencies at all; the portal pages
+pull the Supabase library straight from a CDN as an ES module, so there is still
+nothing to install or compile.
 
 ## Design
 - **Colors:** white and green (`#1f7a4d`), defined as CSS variables at the top
@@ -54,7 +62,7 @@ Then visit http://localhost:8000
 GitHub Pages serves the `main` branch from the repository root. Any push to
 `main` goes live within a minute or two.
 
-The stylesheet link carries a `?v=` number. Bump it in **all four** HTML files
+The stylesheet link carries a `?v=` number. Bump it in **every** HTML file
 whenever `styles.css` changes, so browsers pick up the new file instead of a
 cached copy. Keeping the number the same across pages means navigating between
 them does not re-download the stylesheet.
