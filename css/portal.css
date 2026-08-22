@@ -56,6 +56,82 @@
 }
 .portal-account .signout:hover { color: var(--green); text-decoration: none; }
 
+/* ---------- Sign in / set password ---------- */
+/* One centred card. The portal is invite only, so there is no sign-up link and
+   nothing else on the screen to weigh it down. */
+.auth-screen {
+  min-height: calc(100vh - 68px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  background: var(--bg-soft);
+}
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+.auth-card h1 {
+  font-size: 1.4rem;
+  letter-spacing: -0.4px;
+  margin: 0 0 6px;
+}
+.auth-card .sub {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0 0 24px;
+}
+.auth-card .btn { width: 100%; }
+.auth-links {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+.auth-links button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--green);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Sits under the button for both the "check your email" confirmations and the
+   failures, so the eye lands in one place either way. */
+.auth-msg {
+  margin: 16px 0 0;
+  font-size: 0.9rem;
+  padding: 11px 13px;
+  border-radius: 10px;
+}
+.auth-msg.ok {
+  color: #14603c;
+  background: var(--green-light);
+  border: 1px solid #bcd9c8;
+}
+.auth-msg.bad {
+  color: #8a3116;
+  background: #fdf0ea;
+  border: 1px solid #f3d3c4;
+}
+
+/* Held until the session check finishes, so the login card never flashes up in
+   front of someone who is already signed in. */
+.portal-booting {
+  min-height: calc(100vh - 68px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 /* ---------- Shell ---------- */
 .portal {
   display: grid;

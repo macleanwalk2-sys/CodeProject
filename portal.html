@@ -15,7 +15,7 @@
        fields. portal.css adds only what is new here, so the marketing pages are
        untouched and neither side loads the other's CSS. -->
   <link rel="stylesheet" href="css/styles.css?v=82">
-  <link rel="stylesheet" href="css/portal.css?v=1">
+  <link rel="stylesheet" href="css/portal.css?v=2">
 </head>
 <body>
 
@@ -27,18 +27,67 @@
         <img src="assets/logo.svg" alt="Oakwood Marketing logo" class="logo-mark">
         Oakwood Marketing
       </a>
-      <div class="portal-account">
+      <div class="portal-account" id="accountBar" hidden>
         <div class="who">
-          <strong>Triangle Gutter Co.</strong>
-          <span>sarah@trianglegutter.com</span>
+          <strong id="accountName">—</strong>
+          <span id="accountEmail"></span>
         </div>
-        <span class="avatar" aria-hidden="true">TG</span>
-        <a href="index.html" class="signout">Sign out</a>
+        <span class="avatar" id="accountAvatar" aria-hidden="true"></span>
+        <button type="button" class="signout" id="signOutBtn">Sign out</button>
       </div>
     </div>
   </header>
 
-  <div class="portal">
+  <!-- Shown until the session check finishes, so the login card never flashes
+       up in front of someone who is already signed in. -->
+  <div class="portal-booting" id="booting">Loading…</div>
+
+  <!-- Sign in -->
+  <div class="auth-screen" id="signInScreen" hidden>
+    <div class="auth-card">
+      <h1>Client sign in</h1>
+      <p class="sub">Accounts are set up by us. If you need access, email
+        <a href="mailto:hello@oakwoodmarketing.com">hello@oakwoodmarketing.com</a>.</p>
+      <form id="signInForm">
+        <div class="form-group">
+          <label for="signInEmail">Email</label>
+          <input type="email" id="signInEmail" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="signInPassword">Password</label>
+          <input type="password" id="signInPassword" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="signInBtn">Sign in</button>
+      </form>
+      <p class="auth-links">
+        <button type="button" id="forgotBtn">Forgot your password?</button>
+      </p>
+      <p class="auth-msg" id="signInMsg" hidden></p>
+    </div>
+  </div>
+
+  <!-- Where invite and password-reset links land -->
+  <div class="auth-screen" id="setPasswordScreen" hidden>
+    <div class="auth-card">
+      <h1 id="setPasswordTitle">Set your password</h1>
+      <p class="sub">Pick something you don't use anywhere else. At least 8 characters.</p>
+      <form id="setPasswordForm">
+        <div class="form-group">
+          <label for="newPassword">New password</label>
+          <input type="password" id="newPassword" autocomplete="new-password" minlength="8" required>
+        </div>
+        <div class="form-group">
+          <label for="newPassword2">Confirm password</label>
+          <input type="password" id="newPassword2" autocomplete="new-password" minlength="8" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="setPasswordBtn">Save password</button>
+      </form>
+      <p class="auth-msg" id="setPasswordMsg" hidden></p>
+    </div>
+  </div>
+
+  <!-- The portal proper -->
+  <div class="portal" id="portalApp" hidden>
 
     <!-- Sidebar -->
     <aside class="portal-sidebar">
@@ -54,7 +103,7 @@
             <a href="portal.html" class="active" aria-current="page">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v15L12 16l-8.5 4V5A1.5 1.5 0 0 1 5 3.5Z"/></svg>
               Requests
-              <span class="count">4</span>
+              <span class="count" id="navOpenCount">0</span>
             </a>
           </li>
           <li>
@@ -105,17 +154,11 @@
         </button>
       </div>
 
-      <!-- Remove this once the portal reads real requests from the database. -->
-      <div class="portal-demo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg>
-        <p><strong>Mockup.</strong> The requests below are sample data and the form doesn't save yet. Layout and wording only, so it's cheap to change.</p>
-      </div>
-
       <div class="portal-filters">
-        <button type="button" class="filter-tab" data-filter="all" aria-pressed="true">All <span class="n">7</span></button>
-        <button type="button" class="filter-tab" data-filter="open" aria-pressed="false">Open <span class="n">4</span></button>
-        <button type="button" class="filter-tab" data-filter="waiting" aria-pressed="false">Needs you <span class="n">1</span></button>
-        <button type="button" class="filter-tab" data-filter="done" aria-pressed="false">Completed <span class="n">3</span></button>
+        <button type="button" class="filter-tab" data-filter="all" aria-pressed="true">All <span class="n" data-count="all">0</span></button>
+        <button type="button" class="filter-tab" data-filter="open" aria-pressed="false">Open <span class="n" data-count="open">0</span></button>
+        <button type="button" class="filter-tab" data-filter="waiting" aria-pressed="false">Needs you <span class="n" data-count="waiting">0</span></button>
+        <button type="button" class="filter-tab" data-filter="done" aria-pressed="false">Completed <span class="n" data-count="done">0</span></button>
         <div class="portal-search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg>
           <label class="visually-hidden" for="reqSearch">Search requests</label>
@@ -123,119 +166,11 @@
         </div>
       </div>
 
-      <ul class="req-list" id="reqList">
+      <ul class="req-list" id="reqList"></ul>
 
-        <li class="req-row" data-status="waiting">
-          <div class="req-main">
-            <h2 class="req-title"><span class="ref">#1047</span>Add fall promo banner to the homepage</h2>
-            <div class="req-meta">
-              <span class="type-tag">Design</span>
-              <span class="dot">·</span>
-              <span>Submitted Aug 14</span>
-              <span class="dot">·</span>
-              <span>Updated Aug 18</span>
-            </div>
-          </div>
-          <span class="status status-waiting">Needs you</span>
-          <p class="req-note">Waiting on you: send the banner image, or we can design one for you.</p>
-        </li>
-
-        <li class="req-row" data-status="progress">
-          <div class="req-main">
-            <h2 class="req-title"><span class="ref">#1046</span>New service page for gutter cleaning</h2>
-            <div class="req-meta">
-              <span class="type-tag">New page</span>
-              <span class="dot">·</span>
-              <span>Submitted Aug 12</span>
-              <span class="dot">·</span>
-              <span>Updated Aug 18</span>
-            </div>
-          </div>
-          <span class="status status-progress">In progress</span>
-          <p class="req-note">Draft is written, building the page now. Expect a preview link by Aug 21.</p>
-        </li>
-
-        <li class="req-row" data-status="progress">
-          <div class="req-main">
-            <h2 class="req-title"><span class="ref">#1045</span>Update business hours for Labor Day weekend</h2>
-            <div class="req-meta">
-              <span class="type-tag">Content edit</span>
-              <span class="dot">·</span>
-              <span>Submitted Aug 15</span>
-              <span class="dot">·</span>
-              <span>Updated Aug 17</span>
-            </div>
-          </div>
-          <span class="status status-progress">In progress</span>
-          <p class="req-note">Scheduled to go live Aug 29 and revert Sep 2.</p>
-        </li>
-
-        <li class="req-row" data-status="new">
-          <div class="req-main">
-            <h2 class="req-title"><span class="ref">#1044</span>Add the business to Google Business Profile and Yelp</h2>
-            <div class="req-meta">
-              <span class="type-tag">Listings</span>
-              <span class="dot">·</span>
-              <span>Submitted Aug 18</span>
-              <span class="dot">·</span>
-              <span>Updated Aug 18</span>
-            </div>
-          </div>
-          <span class="status status-new">New</span>
-          <p class="req-note">Received. We'll confirm a start date within one business day.</p>
-        </li>
-
-        <li class="req-row" data-status="done">
-          <div class="req-main">
-            <h2 class="req-title"><span class="ref">#1043</span>Contact form isn't sending messages</h2>
-            <div class="req-meta">
-              <span class="type-tag">Something's broken</span>
-              <span class="dot">·</span>
-              <span>Submitted Aug 8</span>
-              <span class="dot">·</span>
-              <span>Completed Aug 11</span>
-            </div>
-          </div>
-          <span class="status status-done">Completed</span>
-          <p class="req-note">Fixed and tested. Submissions now reach sarah@trianglegutter.com.</p>
-        </li>
-
-        <li class="req-row" data-status="done">
-          <div class="req-main">
-            <h2 class="req-title"><span class="ref">#1042</span>Swap the team photo on the About page</h2>
-            <div class="req-meta">
-              <span class="type-tag">Content edit</span>
-              <span class="dot">·</span>
-              <span>Submitted Aug 5</span>
-              <span class="dot">·</span>
-              <span>Completed Aug 7</span>
-            </div>
-          </div>
-          <span class="status status-done">Completed</span>
-          <p class="req-note">New photo is live and resized for mobile.</p>
-        </li>
-
-        <li class="req-row" data-status="done">
-          <div class="req-main">
-            <h2 class="req-title"><span class="ref">#1041</span>Monthly SEO report — July</h2>
-            <div class="req-meta">
-              <span class="type-tag">SEO</span>
-              <span class="dot">·</span>
-              <span>Submitted Aug 1</span>
-              <span class="dot">·</span>
-              <span>Completed Aug 4</span>
-            </div>
-          </div>
-          <span class="status status-done">Completed</span>
-          <p class="req-note">Report is in Files. Calls from search were up 18% over June.</p>
-        </li>
-
-      </ul>
-
-      <!-- Shown by the filter script when nothing matches. -->
       <div class="req-empty" id="reqEmpty" hidden>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v15L12 16l-8.5 4V5A1.5 1.5 0 0 1 5 3.5Z"/></svg>
-        <p>No requests match that.</p>
+        <p id="reqEmptyText">No requests yet. Use “New request” to send us your first one.</p>
       </div>
 
     </main>
@@ -268,7 +203,7 @@
           </div>
           <div class="form-group">
             <label for="reqPage">Which page? <span class="optional">(optional)</span></label>
-            <input type="url" id="reqPage" name="page" placeholder="https://trianglegutter.com/services">
+            <input type="url" id="reqPage" name="page" placeholder="https://example.com/services">
           </div>
           <div class="form-group">
             <label for="reqDetails">Details</label>
@@ -285,98 +220,313 @@
             </select>
           </div>
           <p class="hint">You'll get an email as soon as we pick this up.</p>
-          <p class="form-status form-error" id="reqNotSaved" hidden>This form isn't connected yet, so nothing was saved.</p>
+          <p class="form-status form-error" id="reqError" hidden></p>
         </div>
         <div class="modal-foot">
           <button type="button" class="btn btn-outline" id="modalCancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Submit request</button>
+          <button type="submit" class="btn btn-primary" id="reqSubmit">Submit request</button>
         </div>
       </form>
     </div>
   </div>
 
-  <script>
-    (function () {
-      /* ---- Filter and search ---- */
-      var rows   = Array.prototype.slice.call(document.querySelectorAll('.req-row'));
-      var tabs   = Array.prototype.slice.call(document.querySelectorAll('.filter-tab'));
-      var search = document.getElementById('reqSearch');
-      var empty  = document.getElementById('reqEmpty');
-      var filter = 'all';
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { SUPABASE_URL, SUPABASE_KEY } from './js/supabase-config.js';
 
+    const $ = (id) => document.getElementById(id);
+
+    /* ---------- Screens ---------- */
+    const screens = {
+      booting: $('booting'),
+      signIn: $('signInScreen'),
+      setPassword: $('setPasswordScreen'),
+      app: $('portalApp')
+    };
+    function show(name) {
+      Object.entries(screens).forEach(([key, el]) => { el.hidden = key !== name; });
+      $('accountBar').hidden = name !== 'app';
+    }
+    function say(el, text, ok) {
+      el.textContent = text;
+      el.className = 'auth-msg ' + (ok ? 'ok' : 'bad');
+      el.hidden = false;
+    }
+
+    // Fail loudly rather than throwing something cryptic from deep inside the
+    // library if the config was never filled in.
+    if (SUPABASE_URL.startsWith('PASTE_')) {
+      screens.booting.textContent =
+        'Portal not connected yet: add your Supabase API URL to js/supabase-config.js.';
+      throw new Error('SUPABASE_URL is not set');
+    }
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    /* ---------- Status vocabulary ---------- */
+    /* Kept in one place so the pill, the filter tabs and the database check
+       constraint cannot drift apart. */
+    const STATUS = {
+      new:      { label: 'New',         cls: 'status-new' },
+      progress: { label: 'In progress', cls: 'status-progress' },
+      waiting:  { label: 'Needs you',   cls: 'status-waiting' },
+      done:     { label: 'Completed',   cls: 'status-done' }
+    };
+
+    const fmtDate = (iso) =>
+      new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    /* ---------- Rendering ---------- */
+    let requests = [];
+    let filter = 'all';
+
+    // Built with DOM calls rather than an HTML string: every field here was
+    // typed by a client, and concatenating it into innerHTML would run whatever
+    // markup they sent.
+    function rowFor(r) {
+      const status = STATUS[r.status] || STATUS.new;
+      const li = document.createElement('li');
+      li.className = 'req-row';
+      li.dataset.status = r.status;
+
+      const main = document.createElement('div');
+      main.className = 'req-main';
+
+      const h2 = document.createElement('h2');
+      h2.className = 'req-title';
+      const ref = document.createElement('span');
+      ref.className = 'ref';
+      ref.textContent = '#' + r.id;
+      h2.append(ref, document.createTextNode(r.title));
+
+      const meta = document.createElement('div');
+      meta.className = 'req-meta';
+      const tag = document.createElement('span');
+      tag.className = 'type-tag';
+      tag.textContent = r.type;
+      meta.append(tag);
+      const dates = [
+        'Submitted ' + fmtDate(r.created_at),
+        (r.status === 'done' ? 'Completed ' : 'Updated ') + fmtDate(r.updated_at)
+      ];
+      dates.forEach((text) => {
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        dot.textContent = '·';
+        const span = document.createElement('span');
+        span.textContent = text;
+        meta.append(dot, span);
+      });
+
+      main.append(h2, meta);
+
+      const pill = document.createElement('span');
+      pill.className = 'status ' + status.cls;
+      pill.textContent = status.label;
+
+      li.append(main, pill);
+
+      if (r.note) {
+        const note = document.createElement('p');
+        note.className = 'req-note';
+        note.textContent = r.note;
+        li.append(note);
+      }
+      return li;
+    }
+
+    function render() {
+      const term = $('reqSearch').value.trim().toLowerCase();
       // "Open" is everything still on our plate, whoever it is waiting on.
-      function inFilter(status) {
-        if (filter === 'all')  return true;
-        if (filter === 'open') return status !== 'done';
-        return status === filter;
+      const inFilter = (s) =>
+        filter === 'all' ? true : filter === 'open' ? s !== 'done' : s === filter;
+
+      const shown = requests.filter(
+        (r) => inFilter(r.status) &&
+          (!term || [r.title, r.type, r.details, r.note].join(' ').toLowerCase().includes(term))
+      );
+
+      const list = $('reqList');
+      list.replaceChildren(...shown.map(rowFor));
+      $('reqEmpty').hidden = shown.length > 0;
+      $('reqEmptyText').textContent = requests.length === 0
+        ? 'No requests yet. Use “New request” to send us your first one.'
+        : 'No requests match that.';
+
+      const counts = {
+        all: requests.length,
+        open: requests.filter((r) => r.status !== 'done').length,
+        waiting: requests.filter((r) => r.status === 'waiting').length,
+        done: requests.filter((r) => r.status === 'done').length
+      };
+      document.querySelectorAll('[data-count]').forEach((el) => {
+        el.textContent = counts[el.dataset.count];
+      });
+      $('navOpenCount').textContent = counts.open;
+    }
+
+    async function loadRequests() {
+      // No client filter needed: row level security already limits this to the
+      // signed-in client's own rows.
+      const { data, error } = await supabase
+        .from('requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) {
+        $('reqEmpty').hidden = false;
+        $('reqEmptyText').textContent = 'Could not load your requests: ' + error.message;
+        return;
       }
+      requests = data;
+      render();
+    }
 
-      function apply() {
-        var term = search.value.trim().toLowerCase();
-        var shown = 0;
+    function showAccount(user) {
+      const email = user.email || '';
+      const name = user.user_metadata?.company || email.split('@')[0];
+      $('accountName').textContent = name;
+      $('accountEmail').textContent = email;
+      $('accountAvatar').textContent = (name.slice(0, 2) || '?').toUpperCase();
+    }
 
-        rows.forEach(function (row) {
-          var match = inFilter(row.getAttribute('data-status')) &&
-                      (!term || row.textContent.toLowerCase().indexOf(term) !== -1);
-          row.hidden = !match;
-          if (match) shown++;
+    /* ---------- Sign in ---------- */
+    $('signInForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = $('signInBtn');
+      btn.disabled = true;
+      const { error } = await supabase.auth.signInWithPassword({
+        email: $('signInEmail').value.trim(),
+        password: $('signInPassword').value
+      });
+      btn.disabled = false;
+      if (error) {
+        say($('signInMsg'), 'That email and password did not match. Try again.', false);
+        return;
+      }
+      await start();
+    });
+
+    $('forgotBtn').addEventListener('click', async () => {
+      const email = $('signInEmail').value.trim();
+      if (!email) {
+        say($('signInMsg'), 'Enter your email above first, then click this again.', false);
+        return;
+      }
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.href.split('#')[0]
+      });
+      say($('signInMsg'),
+        error ? error.message : 'Check your email for a link to set a new password.',
+        !error);
+    });
+
+    $('signOutBtn').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.location.reload();
+    });
+
+    /* ---------- Set password (invite and reset links land here) ---------- */
+    $('setPasswordForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pw = $('newPassword').value;
+      if (pw !== $('newPassword2').value) {
+        say($('setPasswordMsg'), 'The two passwords do not match.', false);
+        return;
+      }
+      const btn = $('setPasswordBtn');
+      btn.disabled = true;
+      const { error } = await supabase.auth.updateUser({ password: pw });
+      btn.disabled = false;
+      if (error) {
+        say($('setPasswordMsg'), error.message, false);
+        return;
+      }
+      // Drop the token out of the address bar so a refresh or a shared link
+      // cannot land anyone back on this screen.
+      history.replaceState(null, '', window.location.pathname);
+      await start();
+    });
+
+    /* ---------- Filters ---------- */
+    document.querySelectorAll('.filter-tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        filter = tab.dataset.filter;
+        document.querySelectorAll('.filter-tab').forEach((t) => {
+          t.setAttribute('aria-pressed', String(t === tab));
         });
+        render();
+      });
+    });
+    $('reqSearch').addEventListener('input', render);
 
-        empty.hidden = shown > 0;
+    /* ---------- New request dialog ---------- */
+    const modal = $('newRequestModal');
+    let lastFocused = null;
+
+    function openModal() {
+      lastFocused = document.activeElement;
+      $('reqError').hidden = true;
+      modal.hidden = false;
+      $('reqTitle').focus();
+    }
+    function closeModal() {
+      modal.hidden = true;
+      if (lastFocused) lastFocused.focus();
+    }
+    $('newRequestBtn').addEventListener('click', openModal);
+    $('modalClose').addEventListener('click', closeModal);
+    $('modalCancel').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+
+    $('newRequestForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = $('reqSubmit');
+      btn.disabled = true;
+      // user_id is left off on purpose: the column defaults to auth.uid(), so
+      // the database stamps the row with whoever is signed in and a client
+      // cannot file a request in someone else's name.
+      const { error } = await supabase.from('requests').insert({
+        title: $('reqTitle').value.trim(),
+        type: $('reqType').value,
+        page_url: $('reqPage').value.trim() || null,
+        details: $('reqDetails').value.trim(),
+        needed_when: $('reqWhen').value
+      });
+      btn.disabled = false;
+      if (error) {
+        $('reqError').textContent = 'Could not send that: ' + error.message;
+        $('reqError').hidden = false;
+        return;
       }
+      e.target.reset();
+      closeModal();
+      await loadRequests();
+    });
 
-      tabs.forEach(function (tab) {
-        tab.addEventListener('click', function () {
-          filter = tab.getAttribute('data-filter');
-          tabs.forEach(function (t) {
-            t.setAttribute('aria-pressed', String(t === tab));
-          });
-          apply();
-        });
-      });
+    /* ---------- Boot ---------- */
+    async function start() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { show('signIn'); return; }
+      showAccount(session.user);
+      show('app');
+      await loadRequests();
+    }
 
-      search.addEventListener('input', apply);
-
-      /* ---- New request dialog ---- */
-      var modal  = document.getElementById('newRequestModal');
-      var openBtn = document.getElementById('newRequestBtn');
-      var form   = document.getElementById('newRequestForm');
-      var lastFocused = null;
-
-      var notSaved = document.getElementById('reqNotSaved');
-
-      function openModal() {
-        lastFocused = document.activeElement;
-        notSaved.hidden = true;
-        modal.hidden = false;
-        document.getElementById('reqTitle').focus();
-      }
-
-      function closeModal() {
-        modal.hidden = true;
-        if (lastFocused) lastFocused.focus();
-      }
-
-      openBtn.addEventListener('click', openModal);
-      document.getElementById('modalClose').addEventListener('click', closeModal);
-      document.getElementById('modalCancel').addEventListener('click', closeModal);
-
-      // Clicking the dimmed area outside the panel closes it.
-      modal.addEventListener('click', function (e) {
-        if (e.target === modal) closeModal();
-      });
-
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !modal.hidden) closeModal();
-      });
-
-      // Nothing to save yet. Say so in the panel rather than closing it as if it
-      // worked, and without an alert box the brand has no control over.
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        notSaved.hidden = false;
-      });
-    })();
+    // An invite or reset link arrives with its token in the URL fragment. The
+    // library signs the session in from it, so the check is what kind of link it
+    // was, not whether there is a session: both kinds need a password set before
+    // the portal is any use.
+    const linkType = new URLSearchParams(window.location.hash.slice(1)).get('type');
+    if (linkType === 'invite' || linkType === 'recovery') {
+      $('setPasswordTitle').textContent =
+        linkType === 'invite' ? 'Set your password' : 'Choose a new password';
+      show('setPassword');
+    } else {
+      start();
+    }
   </script>
 
 </body>
