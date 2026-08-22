@@ -428,6 +428,9 @@ section { padding: 56px 0; }
   align-items: start;
 }
 .price-cards.two   { grid-template-columns: repeat(2, 1fr); max-width: 780px; margin-inline: auto; margin-bottom: 54px; }
+/* Both build cards carry a badge that hangs over the top edge, so the row needs
+   room for it. */
+.price-cards.two .price-card { margin-top: 12px; }
 .price-cards.three { grid-template-columns: repeat(3, 1fr); }
 
 .price-card {
@@ -470,6 +473,27 @@ section { padding: 56px 0; }
 }
 .price .from { margin-right: 7px; }
 .price .to { margin: 0 6px; }
+
+/* The struck list price sitting beside the offer. Deliberately smaller and in
+   the body face, so the number people actually pay stays the loud one. <s>
+   rather than a styled span, so it is announced as no longer current instead of
+   read out as a second price. */
+.price-was {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration-thickness: 2px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+/* Sits under the price, so the offer has a reason and an end rather than just
+   being a lower number. */
+.price-note {
+  margin: -12px 0 20px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
 
 .price-list {
   list-style: none;
@@ -1497,7 +1521,12 @@ section { padding: 56px 0; }
    overflow:hidden here cut it off in a straight line the same way the hero
    used to. The growing trees sit well inside the section, so nothing needed
    the clip. */
-.cta-section { position: relative; }
+/* Headroom for the egg, which hangs 62px above the band, plus its glow, which
+   reaches 56px past that again (inset -58% of a 96px box). 118px is the exact
+   floor; below it the glow starts touching the section above, which is a
+   dashboard band clipped to an ellipse, so it bows down at its centre exactly
+   where the egg is. */
+.cta-section { position: relative; padding-top: 120px; }
 .cta-section > .container { position: relative; z-index: 1; }
 .cta-tree {
   position: absolute;
