@@ -56,6 +56,11 @@
 }
 .portal-account .signout:hover { color: var(--green); text-decoration: none; }
 
+/* The hidden attribute works through a browser default rule, which any author
+   rule setting display beats. Several blocks below set display: flex or grid,
+   so without this they stay on screen while marked hidden. */
+[hidden] { display: none !important; }
+
 /* ---------- Sign in / set password ---------- */
 /* One centred card. The portal is invite only, so there is no sign-up link and
    nothing else on the screen to weigh it down. */
