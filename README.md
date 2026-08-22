@@ -4,7 +4,7 @@ Marketing website for **Oakwood Marketing Services**, helping small and mid-size
 businesses in Raleigh and the Triangle area with website development, SEO, and
 custom marketing services.
 
-**Live site:** https://macleanwalk2-sys.github.io/CodeProject/
+**Live site:** https://oakwood-marketing.com/
 
 ## Pages
 - `index.html` — Home: hero, services preview, process, portfolio, CTA
@@ -134,8 +134,8 @@ it at proper SMTP under **Project Settings → Authentication → SMTP Settings*
   `PASTE_YOUR_FORMSPREE_ENDPOINT_HERE`. Until then the form stays in demo mode
   and points visitors at the email address instead of silently discarding
   messages. Nothing else needs changing.
-- **Contact details** are placeholders: `hello@oakwoodmarketing.com`,
-  `mac@oakwoodmarketing.com`, and the phone number on About.
+- **Contact details** are placeholders: `hello@oakwood-marketing.com`,
+  `mac@oakwood-marketing.com`, and the phone number on About.
 - **Founder photo** is not in the repo yet. Add it as `assets/mac.jpg` and it
   appears automatically; until then a designed fallback panel shows instead.
 - **Portfolio** holds three placeholder cards. Each screenshot is an inline SVG
