@@ -1409,6 +1409,17 @@ section { padding: 56px 0; }
   color: #fff;
 }
 
+/* Nav "Client Login": a white box out on the corner, past the sales button.
+   .nav-links a sets the muted grey on every link and outranks .btn-outline, so
+   the green has to be restated here. Slightly tighter than the quote button so
+   the pair reads as one CTA and one quiet door, not two equal offers. */
+.nav-links a.nav-login,
+.nav-links a.nav-login:hover {
+  color: var(--green);
+  padding: 10px 16px;
+  margin-left: 4px;
+}
+
 /* Primary button: lift + soft shadow so it reads as clickable */
 .btn-primary {
   box-shadow: 0 6px 16px rgba(31, 122, 77, 0.22);
