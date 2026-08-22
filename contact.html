@@ -60,13 +60,11 @@
     <div class="container contact-grid reveal-group">
 
       <!-- Form -->
-      <!-- TO GO LIVE: create a free form at https://formspree.io, then paste the
-           endpoint it gives you into data-endpoint below, replacing PASTE_YOUR_
-           FORMSPREE_ENDPOINT_HERE. Nothing else needs to change. Until then the
-           form stays in demo mode and tells visitors to email instead, so no one
-           submits into a void. -->
+      <!-- Live. Submissions post to Formspree, which forwards them to the
+           address on the form's Formspree settings. To point it somewhere else,
+           change it there rather than here; this endpoint stays the same. -->
       <div class="reveal">
-        <form id="contactForm" data-endpoint="PASTE_YOUR_FORMSPREE_ENDPOINT_HERE" method="POST">
+        <form id="contactForm" data-endpoint="https://formspree.io/f/xwlezzvz" method="POST">
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
