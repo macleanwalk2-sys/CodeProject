@@ -97,7 +97,7 @@
           <button type="submit" class="btn btn-primary" id="submitBtn">Send Message</button>
           <p class="form-note" id="formNote">Not connected yet. Please email <a href="mailto:macw@oakwood-marketing.com">macw@oakwood-marketing.com</a> and we'll get right back to you.</p>
           <p class="form-status form-success" id="formSuccess" hidden>Thanks! Your message came through. We'll be in touch shortly.</p>
-          <p class="form-status form-error" id="formError" hidden>Something went wrong sending that. Please email <a href="mailto:macw@oakwood-marketing.com">macw@oakwood-marketing.com</a> instead.</p>
+          <p class="form-status form-error" id="formError" hidden>Something went wrong sending that. Please email <a href="mailto:macw@oakwood-marketing.com">macw@oakwood-marketing.com</a> instead. <span id="formErrorWhy"></span></p>
         </form>
       </div>
 
@@ -180,15 +180,32 @@
         btn.disabled = true;
         btn.textContent = 'Sending...';
 
+        var why = document.getElementById('formErrorWhy');
+        why.textContent = '';
+
         fetch(endpoint, {
           method: 'POST',
           body: new FormData(form),
           headers: { 'Accept': 'application/json' }
         }).then(function (res) {
-          if (!res.ok) throw new Error('Request failed');
-          form.reset();
-          success.hidden = false;
+          // Formspree explains a refusal in an errors array. Reading it turns a
+          // dead end into something anyone can act on: a form that is not
+          // activated yet, or is locked to a different domain, says so instead
+          // of failing the same way a dropped connection does.
+          return res.json().catch(function () { return null; }).then(function (data) {
+            if (res.ok) {
+              form.reset();
+              success.hidden = false;
+              return;
+            }
+            var reasons = data && data.errors && data.errors.length
+              ? data.errors.map(function (e) { return e.message; }).join(' ')
+              : 'Error ' + res.status + '.';
+            why.textContent = '(' + reasons + ')';
+            error.hidden = false;
+          });
         }).catch(function () {
+          // No response at all: offline, blocked, or DNS. Nothing to quote.
           error.hidden = false;
         }).then(function () {
           btn.disabled = false;
