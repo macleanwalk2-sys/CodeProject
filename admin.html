@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Requests | Oakwood Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=90">
+  <link rel="stylesheet" href="css/portal.css?v=4">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container portal-bar nav">
+      <a href="index.html" class="brand">
+        <img src="assets/logo.svg" alt="Oakwood Marketing logo" class="logo-mark">
+        Oakwood Marketing
+      </a>
+      <div class="portal-account" id="accountBar" hidden>
+        <div class="who">
+          <strong>Admin</strong>
+          <span id="accountEmail"></span>
+        </div>
+        <span class="avatar" aria-hidden="true">A</span>
+        <button type="button" class="signout" id="signOutBtn">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="portal-booting" id="booting">Loading…</div>
+
+  <div class="portal" id="adminApp" hidden>
+
+    <aside class="portal-sidebar">
+      <nav aria-label="Admin">
+        <ul class="portal-nav">
+          <li>
+            <a href="admin.html" class="active" aria-current="page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v15L12 16l-8.5 4V5A1.5 1.5 0 0 1 5 3.5Z"/></svg>
+              All requests
+              <span class="count" id="navOpenCount">0</span>
+            </a>
+          </li>
+          <li>
+            <a href="admin-stats.html">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V16"/><path d="M9.3 19.5V11"/><path d="M14.7 19.5v-6"/><path d="M20 19.5V5.5"/></svg>
+              Website stats
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-help">
+        <strong>Client view</strong>
+        Clients see the status and the note you write here, and nothing else.
+      </div>
+    </aside>
+
+    <main class="portal-main">
+
+      <div class="portal-head">
+        <div>
+          <h1>All requests</h1>
+          <p>Every client, newest first.</p>
+        </div>
+      </div>
+
+      <div class="portal-filters">
+        <button type="button" class="filter-tab" data-filter="all" aria-pressed="true">All <span class="n" data-count="all">0</span></button>
+        <button type="button" class="filter-tab" data-filter="open" aria-pressed="false">Open <span class="n" data-count="open">0</span></button>
+        <button type="button" class="filter-tab" data-filter="waiting" aria-pressed="false">Needs client <span class="n" data-count="waiting">0</span></button>
+        <button type="button" class="filter-tab" data-filter="done" aria-pressed="false">Completed <span class="n" data-count="done">0</span></button>
+        <div class="portal-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg>
+          <label class="visually-hidden" for="reqSearch">Search requests</label>
+          <input type="search" id="reqSearch" placeholder="Search requests">
+        </div>
+      </div>
+
+      <ul class="req-list" id="reqList"></ul>
+
+      <div class="req-empty" id="reqEmpty" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v15L12 16l-8.5 4V5A1.5 1.5 0 0 1 5 3.5Z"/></svg>
+        <p id="reqEmptyText">No requests from anyone yet.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script type="module">
+    import { supabase, currentSession, isAdmin, PAGES } from './js/portal-auth.js';
+
+    const $ = (id) => document.getElementById(id);
+
+    const session = await currentSession();
+    if (!session) { location.replace(PAGES.login); throw new Error('not signed in'); }
+    // Sends a client who wanders in back to their own portal. This is a
+    // courtesy: without an admins row the queries below return only their own
+    // requests anyway, because the policies decide, not the page.
+    if (!await isAdmin()) { location.replace(PAGES.portal); throw new Error('not an admin'); }
+
+    $('accountEmail').textContent = session.user.email || '';
+    $('accountBar').hidden = false;
+    $('signOutBtn').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      location.replace(PAGES.login);
+    });
+    $('booting').hidden = true;
+    $('adminApp').hidden = false;
+
+    /* ---------- Status vocabulary ---------- */
+    /* The same four the database constrains the column to, so a value here can
+       never be one Postgres will reject. */
+    const STATUS = {
+      new:      { label: 'New',         cls: 'status-new' },
+      progress: { label: 'In progress', cls: 'status-progress' },
+      waiting:  { label: 'Needs client', cls: 'status-waiting' },
+      done:     { label: 'Completed',   cls: 'status-done' }
+    };
+
+    const fmtDate = (iso) =>
+      new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    let requests = [];
+    let clients = {};
+    let filter = 'all';
+
+    /* ---------- One row ---------- */
+    // Built with DOM calls, not an HTML string: every field was typed by a
+    // client and concatenating it into innerHTML would run whatever they sent.
+    function rowFor(r) {
+      const li = document.createElement('li');
+      li.className = 'req-row admin-row';
+      li.dataset.status = r.status;
+
+      const main = document.createElement('div');
+      main.className = 'req-main';
+
+      const h2 = document.createElement('h2');
+      h2.className = 'req-title';
+      const ref = document.createElement('span');
+      ref.className = 'ref';
+      ref.textContent = '#' + r.id;
+      h2.append(ref, document.createTextNode(r.title));
+
+      const meta = document.createElement('div');
+      meta.className = 'req-meta';
+      const who = document.createElement('span');
+      who.className = 'req-client';
+      who.textContent = clients[r.user_id] || 'Unnamed client';
+      const tag = document.createElement('span');
+      tag.className = 'type-tag';
+      tag.textContent = r.type;
+      meta.append(who, tag);
+      [
+        'Submitted ' + fmtDate(r.created_at),
+        'Updated ' + fmtDate(r.updated_at),
+        r.needed_when
+      ].filter(Boolean).forEach((text) => {
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        dot.textContent = '·';
+        const span = document.createElement('span');
+        span.textContent = text;
+        meta.append(dot, span);
+      });
+
+      main.append(h2, meta);
+
+      if (r.details) {
+        const d = document.createElement('p');
+        d.className = 'req-details';
+        d.textContent = r.details;
+        main.append(d);
+      }
+      if (r.page_url) {
+        const a = document.createElement('a');
+        a.className = 'req-page';
+        a.href = r.page_url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = r.page_url;
+        main.append(a);
+      }
+
+      const pill = document.createElement('span');
+      const initial = STATUS[r.status] || STATUS.new;
+      pill.className = 'status ' + initial.cls;
+      pill.textContent = initial.label;
+
+      /* ---- The controls, which is what makes this page worth having ---- */
+      const controls = document.createElement('div');
+      controls.className = 'admin-controls';
+
+      const sel = document.createElement('select');
+      sel.className = 'admin-status';
+      sel.setAttribute('aria-label', 'Status for request ' + r.id);
+      Object.entries(STATUS).forEach(([value, s]) => {
+        const o = document.createElement('option');
+        o.value = value;
+        o.textContent = s.label;
+        if (value === r.status) o.selected = true;
+        sel.append(o);
+      });
+
+      const note = document.createElement('input');
+      note.type = 'text';
+      note.className = 'admin-note';
+      note.placeholder = 'Note the client sees, e.g. waiting on the banner image';
+      note.value = r.note || '';
+      note.setAttribute('aria-label', 'Client-facing note for request ' + r.id);
+
+      const saved = document.createElement('span');
+      saved.className = 'admin-saved';
+      saved.setAttribute('role', 'status');
+
+      function flash(text, bad) {
+        saved.textContent = text;
+        saved.classList.toggle('bad', !!bad);
+        saved.classList.add('show');
+        setTimeout(() => saved.classList.remove('show'), 1800);
+      }
+
+      async function save(patch) {
+        const { error } = await supabase.from('requests').update(patch).eq('id', r.id);
+        if (error) { flash('Not saved: ' + error.message, true); return false; }
+        Object.assign(r, patch);
+        flash('Saved');
+        // Update this row in place rather than re-rendering the list. A full
+        // render replaces every row, including the one holding the
+        // confirmation that just appeared, so the message never survived long
+        // enough to be read. It would also drop focus mid-edit.
+        const st = STATUS[r.status] || STATUS.new;
+        pill.className = 'status ' + st.cls;
+        pill.textContent = st.label;
+        li.dataset.status = r.status;
+        updateCounts();
+        return true;
+      }
+
+      sel.addEventListener('change', () => save({ status: sel.value }));
+      // On blur rather than on every keystroke, so one edit is one write.
+      note.addEventListener('blur', () => {
+        if ((r.note || '') !== note.value) save({ note: note.value || null });
+      });
+      note.addEventListener('keydown', (e) => { if (e.key === 'Enter') note.blur(); });
+
+      controls.append(sel, note, saved);
+      li.append(main, pill, controls);
+      return li;
+    }
+
+    function render() {
+      const term = $('reqSearch').value.trim().toLowerCase();
+      const inFilter = (s) =>
+        filter === 'all' ? true : filter === 'open' ? s !== 'done' : s === filter;
+
+      const shown = requests.filter((r) =>
+        inFilter(r.status) &&
+        (!term || [r.title, r.type, r.details, r.note, clients[r.user_id]]
+          .join(' ').toLowerCase().includes(term)));
+
+      $('reqList').replaceChildren(...shown.map(rowFor));
+      $('reqEmpty').hidden = shown.length > 0;
+      $('reqEmptyText').textContent = requests.length === 0
+        ? 'No requests from anyone yet.'
+        : 'No requests match that.';
+
+      updateCounts();
+    }
+
+    function updateCounts() {
+      const counts = {
+        all: requests.length,
+        open: requests.filter((r) => r.status !== 'done').length,
+        waiting: requests.filter((r) => r.status === 'waiting').length,
+        done: requests.filter((r) => r.status === 'done').length
+      };
+      document.querySelectorAll('[data-count]').forEach((el) => {
+        el.textContent = counts[el.dataset.count];
+      });
+      $('navOpenCount').textContent = counts.open;
+    }
+
+    async function load() {
+      // Two queries rather than a join: requests and clients both point at
+      // auth.users but not at each other, so there is no relationship for
+      // PostgREST to follow. The client list is small; matching them up here is
+      // simpler than adding a foreign key that only exists to satisfy a query.
+      const [reqRes, cliRes] = await Promise.all([
+        supabase.from('requests').select('*').order('created_at', { ascending: false }),
+        supabase.from('clients').select('user_id, company')
+      ]);
+
+      if (reqRes.error) {
+        $('reqEmpty').hidden = false;
+        $('reqEmptyText').textContent = 'Could not load requests: ' + reqRes.error.message;
+        return;
+      }
+      requests = reqRes.data;
+      clients = Object.fromEntries((cliRes.data || []).map((c) => [c.user_id, c.company]));
+      render();
+    }
+
+    document.querySelectorAll('.filter-tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        filter = tab.dataset.filter;
+        document.querySelectorAll('.filter-tab').forEach((t) =>
+          t.setAttribute('aria-pressed', String(t === tab)));
+        render();
+      });
+    });
+    $('reqSearch').addEventListener('input', render);
+
+    await load();
+  </script>
+
+</body>
+</html>

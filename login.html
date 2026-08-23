@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css?v=90">
-  <link rel="stylesheet" href="css/portal.css?v=3">
+  <link rel="stylesheet" href="css/portal.css?v=4">
 </head>
 <body>
 
@@ -51,7 +51,7 @@
   </div>
 
   <script type="module">
-    import { supabase, currentSession, PAGES, absolute } from './js/portal-auth.js';
+    import { supabase, currentSession, isAdmin, PAGES, absolute } from './js/portal-auth.js';
 
     const $ = (id) => document.getElementById(id);
     const msg = $('msg');
@@ -62,7 +62,9 @@
     }
 
     // Already signed in? Skip the form rather than making someone type it again.
-    if (await currentSession()) location.replace(PAGES.portal);
+    // One sign-in page for everyone; where it lands is decided by the admins
+    // table, which only the database can answer.
+    if (await currentSession()) location.replace(await isAdmin() ? PAGES.admin : PAGES.portal);
 
     $('signInForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -76,7 +78,7 @@
         say('That email and password did not match. Try again.', false);
         return;
       }
-      location.href = PAGES.portal;
+      location.href = await isAdmin() ? PAGES.admin : PAGES.portal;
     });
 
     $('forgotBtn').addEventListener('click', async () => {

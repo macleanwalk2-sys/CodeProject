@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Stats | Oakwood Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=90">
+  <link rel="stylesheet" href="css/portal.css?v=4">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container portal-bar nav">
+      <a href="index.html" class="brand">
+        <img src="assets/logo.svg" alt="Oakwood Marketing logo" class="logo-mark">
+        Oakwood Marketing
+      </a>
+      <div class="portal-account" id="accountBar" hidden>
+        <div class="who">
+          <strong>Admin</strong>
+          <span id="accountEmail"></span>
+        </div>
+        <span class="avatar" aria-hidden="true">A</span>
+        <button type="button" class="signout" id="signOutBtn">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="portal-booting" id="booting">Loading…</div>
+
+  <div class="portal" id="adminApp" hidden>
+
+    <aside class="portal-sidebar">
+      <nav aria-label="Admin">
+        <ul class="portal-nav">
+          <li>
+            <a href="admin.html">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14a1.5 1.5 0 0 1 1.5 1.5v15L12 16l-8.5 4V5A1.5 1.5 0 0 1 5 3.5Z"/></svg>
+              All requests
+            </a>
+          </li>
+          <li>
+            <a href="admin-stats.html" class="active" aria-current="page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V16"/><path d="M9.3 19.5V11"/><path d="M14.7 19.5v-6"/><path d="M20 19.5V5.5"/></svg>
+              Website stats
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-help">
+        <strong>Numbers look thin?</strong>
+        Analytics only started collecting recently, so the reports fill in over
+        the following days. Realtime is the one that answers straight away.
+      </div>
+    </aside>
+
+    <main class="portal-main">
+
+      <div class="portal-head">
+        <div>
+          <h1>Website stats</h1>
+          <p>Traffic to oakwood-marketing.com, from Google Analytics.</p>
+        </div>
+        <a class="btn btn-outline" href="https://analytics.google.com/" target="_blank" rel="noopener noreferrer">Open Analytics</a>
+      </div>
+
+      <!-- The Looker Studio report, embedded rather than queried. Reading the
+           Analytics API directly would need a service account key, and anything
+           this page holds is readable by whoever loads it, so that would have
+           to live on a server. Google renders the charts on their side instead.
+
+           TO CHANGE WHAT IS SHOWN: edit the report in Looker Studio. The page
+           picks the change up on its own; nothing here needs touching. -->
+      <div class="stats-embed">
+        <iframe
+          src="https://datastudio.google.com/embed/reporting/a2745d4d-cfe2-4b5a-9841-688631e686a8/page/Zu96F"
+          title="Oakwood Marketing website analytics"
+          frameborder="0"
+          style="border:0"
+          allowfullscreen
+          sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+      </div>
+
+      <p class="stats-note">
+        Not loading? The report has to be shared so that whoever opens this page
+        can view it. In Looker Studio: Share, then check who has access.
+      </p>
+
+    </main>
+  </div>
+
+  <script type="module">
+    import { supabase, currentSession, isAdmin, PAGES } from './js/portal-auth.js';
+    const $ = (id) => document.getElementById(id);
+
+    const session = await currentSession();
+    if (!session) { location.replace(PAGES.login); throw new Error('not signed in'); }
+    if (!await isAdmin()) { location.replace(PAGES.portal); throw new Error('not an admin'); }
+
+    $('accountEmail').textContent = session.user.email || '';
+    $('accountBar').hidden = false;
+    $('signOutBtn').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      location.replace(PAGES.login);
+    });
+    $('booting').hidden = true;
+    $('adminApp').hidden = false;
+  </script>
+
+</body>
+</html>
