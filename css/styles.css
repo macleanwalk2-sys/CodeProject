@@ -1146,9 +1146,13 @@ section { padding: 56px 0; }
 .cta-band.bare p  { color: #3f4d46; }
 
 /* ---------- Contact ---------- */
+/* One column: the form is the whole page now that the details column is gone.
+   Narrower than the container so the fields keep a comfortable measure instead
+   of stretching the full width, and centred so it does not sit off to one side. */
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+  max-width: 620px;
   gap: 40px;
   align-items: start;
 }
@@ -1303,7 +1307,6 @@ section { padding: 56px 0; }
   .promo-stamp { display: none; }
   .cards { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; gap: 28px; }
-  .contact-grid { grid-template-columns: 1fr; }
   .hero h1 { font-size: 2.1rem; }
   .cta-band { padding: 32px 20px; }
 }
