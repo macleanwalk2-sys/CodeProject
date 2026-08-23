@@ -1201,6 +1201,16 @@ section { padding: 56px 0; }
   justify-content: center;
 }
 .contact-info .info-item .icon svg { width: 19px; height: 19px; display: block; }
+/* Sits between the message box and the send button, so it reads as a thank you
+   for taking the time rather than a confirmation that anything has been sent.
+   The confirmation is .form-success, below the button, and only appears after. */
+.form-thanks {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--green);
+  margin: 0 0 16px;
+}
+
 .form-note {
   font-size: 0.85rem;
   color: var(--muted);
