@@ -180,10 +180,21 @@
               success.hidden = false;
               return;
             }
+            // Formspree's wording is written for developers: a bad address
+            // comes back as "should be email", which tells a visitor nothing
+            // and does not say which box to look at. Name the field and say
+            // what to do about it.
+            var LABELS = { email: 'email address', name: 'name', message: 'message', phone: 'phone number' };
             var reasons = data && data.errors && data.errors.length
-              ? data.errors.map(function (e) { return e.message; }).join(' ')
+              ? data.errors.map(function (e) {
+                  var field = LABELS[e.field] || e.field;
+                  if (e.field === 'email') {
+                    return 'Check the email address you entered — it needs a full domain, like you@example.com.';
+                  }
+                  return field ? 'Check the ' + field + ' field.' : e.message;
+                }).join(' ')
               : 'Error ' + res.status + '.';
-            why.textContent = '(' + reasons + ')';
+            why.textContent = reasons;
             error.hidden = false;
           });
         }).catch(function () {
