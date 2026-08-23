@@ -632,15 +632,16 @@
 .admin-saved.bad { color: #8a3116; }
 
 /* ---------- Stats embed ---------- */
-/* Looker sizes its own canvas, so the frame is given a ratio to hold rather
-   than a height, and it scrolls inside itself on a narrow screen. */
+/* A Looker report is a fixed canvas: it does not reflow to the space it is
+   given, so a ratio would squash a tall report rather than fit it. The frame
+   takes the report's own height instead, set per page from its embed code, and
+   the page scrolls once rather than nesting a scrollbar inside another. */
 .stats-embed {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   background: #fff;
-  aspect-ratio: 600 / 443;
-  min-height: 420px;
+  height: var(--report-height, 900px);
 }
 .stats-embed iframe {
   width: 100%;
