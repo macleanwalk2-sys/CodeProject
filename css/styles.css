@@ -27,6 +27,14 @@
 
 html { scroll-behavior: smooth; }
 
+/* Nothing may widen the page sideways. Half the artwork here is meant to hang
+   past the edges - the flanking trees, the leaf clusters, the cardinal's run-in
+   - and on a narrow screen that turns into a page you can swipe sideways by a
+   few pixels, which just reads as broken.
+   clip rather than hidden: hidden would make this a scroll container and break
+   the sticky header, clip only clips. */
+html, body { overflow-x: clip; }
+
 /* The header is sticky, so jumping to an anchor would park the target
    underneath it. Stop short by the header height plus a little breathing room. */
 [id] { scroll-margin-top: 96px; }
@@ -346,6 +354,7 @@ section { padding: 56px 0; }
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 14px 38px rgba(9, 46, 29, 0.28);
 }
+.promo-video > img,
 .promo-video > iframe,
 .promo-video > video {
   width: 100%;
@@ -787,6 +796,12 @@ section { padding: 56px 0; }
   object-fit: cover;
   object-position: top center;
 }
+
+/* Blank while there is no real work to show. The frame keeps its 8:5 shape and
+   the grid keeps its rhythm, so dropping a screenshot and a title in later
+   changes nothing about the layout. The card's bottom padding matches the
+   frame's top margin, since there is no text under it to space away from. */
+.work-card-empty { padding-bottom: 18px; }
 
 /* Text shares the screenshot's 18px gutter so every edge inside the card
    lines up on one column. */
