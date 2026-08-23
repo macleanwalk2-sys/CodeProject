@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css?v=90">
-  <link rel="stylesheet" href="css/portal.css?v=4">
+  <link rel="stylesheet" href="css/portal.css?v=5">
 </head>
 <body>
 
@@ -77,9 +77,14 @@
 
            TO CHANGE WHAT IS SHOWN: edit the report in Looker Studio. The page
            picks the change up on its own; nothing here needs touching. -->
-      <div class="stats-embed">
+      <!-- The height is the report's own, taken from its embed code. A Looker
+           canvas is a fixed size and does not reflow, so giving the frame that
+           height lets the page scroll once instead of nesting a scrollbar
+           inside another. Swapping in a different report means updating this
+           number too. -->
+      <div class="stats-embed" style="--report-height: 2125px">
         <iframe
-          src="https://datastudio.google.com/embed/reporting/a2745d4d-cfe2-4b5a-9841-688631e686a8/page/Zu96F"
+          src="https://datastudio.google.com/embed/reporting/afadd2fb-7e8e-464d-b862-2468a22d2df8/page/kIV1C"
           title="Oakwood Marketing website analytics"
           frameborder="0"
           style="border:0"
