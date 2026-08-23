@@ -1426,11 +1426,30 @@ section { padding: 56px 0; }
    .nav-links a sets the muted grey on every link and outranks .btn-outline, so
    the green has to be restated here. Slightly tighter than the quote button so
    the pair reads as one CTA and one quiet door, not two equal offers. */
+/* Client Login: the last thing on the bar, set apart from the sales links.
+   The list is right-aligned, so widening the gap before this one pushes
+   everything else left and leaves it alone out on the corner. A hairline in
+   that gap makes the separation deliberate rather than loose spacing, and
+   marks where the sales side of the nav ends and the client door begins. */
+@media (min-width: 821px) {
+  .nav-links .nav-login-item {
+    margin-left: 12px;
+    padding-left: 26px;
+    border-left: 1px solid var(--border);
+  }
+}
 .nav-links a.nav-login,
 .nav-links a.nav-login:hover {
   color: var(--green);
-  padding: 10px 16px;
-  margin-left: 4px;
+  padding: 9px 17px;
+  font-size: 0.92rem;
+  /* Softer edge than the quote button's solid fill, so the pair reads as one
+     call to action and one quiet door rather than two competing offers. */
+  border-color: #cfe0d6;
+}
+.nav-links a.nav-login:hover {
+  background: var(--green-light);
+  border-color: var(--green);
 }
 
 /* Primary button: lift + soft shadow so it reads as clickable */
